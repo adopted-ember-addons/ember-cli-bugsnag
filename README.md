@@ -1,8 +1,25 @@
 # Ember-cli-bugsnag
 
-This README outlines the details of collaborating on this Ember addon.
-
 ## Installation
+
+Install the addon:
+
+```sh
+npm install ember-cli-bugsnag --save-dev
+```
+
+Run `ember-cli-bugsnag` generator:
+
+```sh
+ember g ember-cli-bugsnag
+```
+
+Addon is going to generate couple of files:
+
++ `.bugsnag` (while that contains `apiKey` that Bugsnag uses to report errors)
++ `bugsnag` initializer to integrate Bugsnag reporting with Ember
+
+## Contributing
 
 * `git clone` this repository
 * `npm install`
