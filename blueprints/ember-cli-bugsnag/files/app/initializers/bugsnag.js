@@ -14,6 +14,6 @@ export default {
 
     Ember.Logger.error = function (message, cause, stack) {
       Bugsnag.notifyException(new Error(message), null, { cause: cause, stack: stack });
-    }
+    };
   }
 };
