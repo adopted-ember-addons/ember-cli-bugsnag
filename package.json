@@ -11,7 +11,10 @@
     "build": "ember build",
     "test": "ember test"
   },
-  "repository": "https://github.com/twokul/ember-cli-bugsnag",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/twokul/ember-cli-bugsnag.git"
+  },
   "engines": {
     "node": ">= 0.10.0"
   },
