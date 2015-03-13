@@ -10,10 +10,18 @@ module.exports = {
   },
 
   afterInstall: function() {
+
+    this.addBowerPackageToProject('bugsnag', '~2.4.7');
+
     this.insertIntoFile('.jshintrc', '    "Bugsnag",', {
       after: '"predef": [\n'
     });
 
     return this.insertIntoFile('.gitignore', '.bugsnag');
-  }
+  },
+
+  included: function(app) {
+    this._super.included(app);
+    app.import(app.bowerDirectory + '/bugsnag/src/bugsnag.js');
+  },
 };
