@@ -14,12 +14,9 @@ module.exports = {
       bugsnagConfig = readConfig();
 
       content = [
-        '<script ',
-        'src="//d2wy8f7a9ursnm.cloudfront.net/bugsnag-2.min.js" ',
-        'data-appversion="' + config.currentRevision + '" ',
-        'data-apikey="' + bugsnagConfig.apiKey + '">',
-        '</script>',
         '<script>',
+        'Bugsnag.apiKey = "' + bugsnagConfig.apiKey + '";',
+        'Bugsnag.appVersion = "' + config.curentRevision + '";',
         'Bugsnag.releaseStage = "' + config.environment + '";',
         'Bugsnag.notifyReleaseStages = ["' + config.environment + '"];',
         '</script>'
