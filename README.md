@@ -18,7 +18,9 @@ ember g ember-cli-bugsnag
 
 Addon is going to generate couple of files:
 
-+ `.bugsnag` (while that contains `apiKey` that Bugsnag uses to report errors)
++ `.bugsnag` json configuration file
+  + `apiKey` (`Bugsnag` api key)
+  + `notifyReleaseStages` (array of environments that `Bugsnag` is going to report errors on)
 + `bugsnag` initializer to integrate Bugsnag reporting with Ember
 
 ## Contributing
