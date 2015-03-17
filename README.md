@@ -1,5 +1,7 @@
 # Ember-cli-bugsnag
 
+[![Build Status](https://travis-ci.org/twokul/ember-cli-bugsnag.svg)](https://travis-ci.org/twokul/ember-cli-bugsnag)
+
 ## Installation
 
 Install the addon:
