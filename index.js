@@ -9,9 +9,11 @@ module.exports = {
   contentFor: function(type, config) {
     var content = '';
     var bugsnagConfig;
+    var envArray;
 
-    if (type === 'head') {
+    if (type === 'head' && config.environment !== 'test') {
       bugsnagConfig = readConfig();
+      envArray      = bugsnagConfig.notifyReleaseStages ? bugsnagConfig.notifyReleaseStages : [];
 
       content = [
         '<script ',
@@ -21,7 +23,7 @@ module.exports = {
         '</script>',
         '<script>',
         'Bugsnag.releaseStage = "' + config.environment + '";',
-        'Bugsnag.notifyReleaseStages = ["' + bugsnagConfig.notifyReleaseStages.join('","') + '"];',
+        'Bugsnag.notifyReleaseStages = ["' + envArray.join('","') + '"];',
         '</script>'
       ];
     }

@@ -6,7 +6,7 @@ var currentEnv = config.environment;
 export default {
   name: 'bugsnag-error-service',
 
-  initialize: function() {
+  initialize: function(container) {
     if (Bugsnag.notifyReleaseStages.indexOf(currentEnv) !== -1) {
       Ember.onerror = function (error) {
         Bugsnag.context = container.lookup('router:main').get('location').getURL();
