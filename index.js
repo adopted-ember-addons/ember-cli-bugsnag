@@ -10,15 +10,18 @@ module.exports = {
     var content = '';
     var bugsnagConfig;
 
-    if (type === 'head' && config.environment !== 'test') {
+    if (type === 'head') {
       bugsnagConfig = readConfig();
 
       content = [
+        '<script ',
+        'src="//d2wy8f7a9ursnm.cloudfront.net/bugsnag-2.min.js" ',
+        'data-appversion="' + config.currentRevision + '" ',
+        'data-apikey="' + bugsnagConfig.apiKey + '">',
+        '</script>',
         '<script>',
-        'Bugsnag.apiKey = "' + bugsnagConfig.apiKey + '";',
-        'Bugsnag.appVersion = "' + config.curentRevision + '";',
         'Bugsnag.releaseStage = "' + config.environment + '";',
-        'Bugsnag.notifyReleaseStages = ["' + config.environment + '"];',
+        'Bugsnag.notifyReleaseStages = ["' + bugsnagConfig.notifyReleaseStages.join('","') + '"];',
         '</script>'
       ];
     }

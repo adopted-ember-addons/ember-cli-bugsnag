@@ -10,9 +10,6 @@ module.exports = {
   },
 
   afterInstall: function() {
-
-    this.addBowerPackageToProject('bugsnag', '~2.4.7');
-
     this.insertIntoFile('.jshintrc', '    "Bugsnag",', {
       after: '"predef": [\n'
     });
