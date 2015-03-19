@@ -11,16 +11,19 @@ export default {
       Ember.onerror = function (error) {
         Bugsnag.context = container.lookup('router:main').get('location').getURL();
         Bugsnag.notifyException(error);
+        console.error(error.stack);
       };
 
       Ember.RSVP.on('error', function(error) {
         Bugsnag.context = container.lookup('router:main').get('location').getURL();
         Bugsnag.notifyException(error);
+        console.error(error.stack);
       });
 
       Ember.Logger.error = function (message, cause, stack) {
         Bugsnag.context = container.lookup('router:main').get('location').getURL();
         Bugsnag.notifyException(new Error(message), null, { cause: cause, stack: stack });
+        console.error(stack);
       };
     }
   }
