@@ -12,8 +12,15 @@ module.exports = {
     var envArray;
 
     if (type === 'head' && config.environment !== 'test') {
+      // returns `null` if `.bugsnag` does not exist
       bugsnagConfig = readConfig();
-      envArray      = bugsnagConfig.notifyReleaseStages ? bugsnagConfig.notifyReleaseStages : [];
+
+      if (!bugsnagConfig) {
+        console.warn('`.bugsnag` config file does not exist, using `config/environment` instead.');
+        bugsnagConfig = config.bugsnag;
+      }
+
+      envArray = bugsnagConfig.notifyReleaseStages ? bugsnagConfig.notifyReleaseStages : [];
 
       content = [
         '<script ',
