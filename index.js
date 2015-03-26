@@ -17,6 +17,12 @@ module.exports = {
 
       if (!bugsnagConfig) {
         console.warn('`.bugsnag` config file does not exist, using `config/environment` instead.');
+
+        if (!config.bugsnag) {
+          console.warn('`config.bugsnag` is not defined, skipping...');
+          return '';
+        }
+
         bugsnagConfig = config.bugsnag;
       }
 
