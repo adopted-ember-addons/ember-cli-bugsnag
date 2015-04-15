@@ -1,6 +1,6 @@
 {
   "name": "ember-cli-bugsnag",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Integrates Bugsnag reporting service into your Ember CLI app.",
   "directories": {
     "doc": "doc",
