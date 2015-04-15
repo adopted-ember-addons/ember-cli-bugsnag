@@ -7,6 +7,8 @@ export default {
   name: 'bugsnag-error-service',
 
   initialize: function(container) {
+    if (typeof Bugsnag === 'undefined') { return; }
+
     if (currentEnv !== 'test' && Bugsnag.notifyReleaseStages.indexOf(currentEnv) !== -1) {
       Ember.onerror = function (error) {
         Bugsnag.context = container.lookup('router:main').get('location').getURL();
