@@ -16,31 +16,24 @@ Run `ember-cli-bugsnag` generator:
 ember g ember-cli-bugsnag
 ```
 
-Addon is going to generate couple of files:
+## Configuration
 
-+ `.bugsnag` json configuration file
-  + `apiKey` (`Bugsnag` api key)
-  + `notifyReleaseStages` (array of environments that `Bugsnag` is going to report errors on)
-+ `bugsnag` initializer to integrate Bugsnag reporting with Ember
+There are two ways to configure `ember-cli-bugsnag`:
 
-## Contributing
+1. Add POJO to `config/environment`:
 
-* `git clone` this repository
-* `npm install`
-* `bower install`
+```javascript
+{
+  bugsnag: {
+    apiKey: '',
+    notifyReleaseStages: ['development', 'production']
+  }
+}
+```
 
-## Running
+2. Specify environment variables:
 
-* `ember server`
-* Visit your app at http://localhost:4200.
-
-## Running Tests
-
-* `ember test`
-* `ember test --server`
-
-## Building
-
-* `ember build`
-
-For more information on using ember-cli, visit [http://www.ember-cli.com/](http://www.ember-cli.com/).
+```sh
+export BUGSNAG_API_KEY=''
+export BUGSNAG_NOTIFY_RELEASE='development,production'
+```

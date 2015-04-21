@@ -1,8 +1,6 @@
 /* jshint node: true */
 'use strict';
 
-var readConfig = require('./lib/config');
-
 module.exports = {
   name: 'ember-cli-bugsnag',
 
@@ -12,17 +10,23 @@ module.exports = {
     var envArray;
 
     if (type === 'head' && config.environment !== 'test') {
-      // returns `null` if `.bugsnag` does not exist
-      bugsnagConfig = readConfig();
+      if (!config.bugsnag) {
+        console.warn('`config.bugsnag` is not defined, using environment variables instead.');
 
-      if (!bugsnagConfig) {
-        console.warn('`.bugsnag` config file does not exist, using `config/environment` instead.');
+        var envApiKey = process.env['BUGSNAG_API_KEY'];
+        var envReleases = process.env['BUGSNAG_NOTIFY_RELEASE'];
 
-        if (!config.bugsnag) {
-          console.warn('`config.bugsnag` is not defined, skipping...');
+        if (!envApiKey || !envReleases) {
+          console.error('Environment variables `BUGSNAG_API_KEY` and `BUGSNAG_NOTIFY_RELEASE` are not specfied. Bugsnag will not be injected.');
+
           return '';
         }
 
+        bugsnagConfig = {
+          apiKey: envApiKey,
+          notifyReleaseStages: envReleases.split(',')
+        };
+      } else {
         bugsnagConfig = config.bugsnag;
       }
 
