@@ -34,7 +34,7 @@ module.exports = {
 
       content = [
         '<script ',
-        'src="//d2wy8f7a9ursnm.cloudfront.net/bugsnag-2.min.js" ',
+        'src="https://d2wy8f7a9ursnm.cloudfront.net/bugsnag-2.min.js" ',
         'data-appversion="' + config.currentRevision + '" ',
         'data-apikey="' + bugsnagConfig.apiKey + '">',
         '</script>',
