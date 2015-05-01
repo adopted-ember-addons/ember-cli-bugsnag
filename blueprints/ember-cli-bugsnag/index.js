@@ -8,10 +8,8 @@ module.exports = {
   },
 
   afterInstall: function() {
-    this.insertIntoFile('.jshintrc', '    "Bugsnag",', {
+    return this.insertIntoFile('.jshintrc', '    "Bugsnag",', {
       after: '"predef": [\n'
     });
-
-    return this.insertIntoFile('.gitignore', '.bugsnag');
   }
 };
