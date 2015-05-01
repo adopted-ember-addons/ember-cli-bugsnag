@@ -1,5 +1,6 @@
 import Ember  from 'ember';
 import config from '../config/environment';
+import { getContext, generateError } from 'ember-cli-bugsnag/utils/errors';
 
 var currentEnv = config.environment;
 
@@ -11,20 +12,20 @@ export default {
 
     if (currentEnv !== 'test' && Bugsnag.notifyReleaseStages.indexOf(currentEnv) !== -1) {
       Ember.onerror = function (error) {
-        Bugsnag.context = container.lookup('router:main').get('location').getURL();
+        Bugsnag.context = getContext(container.lookup('router:main'));
         Bugsnag.notifyException(error);
         console.error(error.stack);
       };
 
       Ember.RSVP.on('error', function(error) {
-        Bugsnag.context = container.lookup('router:main').get('location').getURL();
+        Bugsnag.context = getContext(container.lookup('router:main'));
         Bugsnag.notifyException(error);
         console.error(error.stack);
       });
 
       Ember.Logger.error = function (message, cause, stack) {
-        Bugsnag.context = container.lookup('router:main').get('location').getURL();
-        Bugsnag.notifyException(new Error(message), null, { cause: cause, stack: stack });
+        Bugsnag.context = getContext(container.lookup('router:main'));
+        Bugsnag.notifyException(generateError(cause, stack), message);
         console.error(stack);
       };
     }

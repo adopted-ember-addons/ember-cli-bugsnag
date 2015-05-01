@@ -2,7 +2,8 @@
   "predef": [
     "document",
     "window",
-    "-Promise"
+    "-Promise",
+    "Bugsnag"
   ],
   "browser": true,
   "boss": true,
