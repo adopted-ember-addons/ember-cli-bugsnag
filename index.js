@@ -17,7 +17,7 @@ module.exports = {
         var envReleases = process.env['BUGSNAG_NOTIFY_RELEASE'];
 
         if (!envApiKey || !envReleases) {
-          console.error('Environment variables `BUGSNAG_API_KEY` and `BUGSNAG_NOTIFY_RELEASE` are not specfied. Bugsnag will not be injected.');
+          console.error('Environment variables `BUGSNAG_API_KEY` and `BUGSNAG_NOTIFY_RELEASE` are not specified. Bugsnag will not be injected.');
 
           return '';
         }
