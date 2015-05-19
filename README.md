@@ -7,13 +7,7 @@
 Install the addon:
 
 ```sh
-npm install ember-cli-bugsnag --save-dev
-```
-
-Run `ember-cli-bugsnag` generator:
-
-```sh
-ember g ember-cli-bugsnag
+ember install ember-cli-bugsnag
 ```
 
 ## Configuration
