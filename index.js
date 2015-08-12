@@ -39,8 +39,10 @@ module.exports = {
         'data-apikey="' + bugsnagConfig.apiKey + '">',
         '</script>',
         '<script>',
+        'if (typeof Bugsnag !== "undefined") {',
         'Bugsnag.releaseStage = "' + config.environment + '";',
         'Bugsnag.notifyReleaseStages = ["' + envArray.join('","') + '"];',
+        '}',
         '</script>'
       ];
     }
