@@ -24,12 +24,14 @@ module.exports = {
 
         bugsnagConfig = {
           apiKey: envApiKey,
-          notifyReleaseStages: envReleases.split(',')
+          notifyReleaseStages: envReleases.split(','),
+          releaseStage: process.env['BUGSNAG_RELEASE_STAGE']
         };
       } else {
         bugsnagConfig = config.bugsnag;
       }
 
+      var releaseStage = bugsnagConfig.releaseStage || config.environment;
       envArray = bugsnagConfig.notifyReleaseStages ? bugsnagConfig.notifyReleaseStages : [];
 
       content = [
@@ -40,7 +42,7 @@ module.exports = {
         '</script>',
         '<script>',
         'if (typeof Bugsnag !== "undefined") {',
-        'Bugsnag.releaseStage = "' + config.environment + '";',
+        'Bugsnag.releaseStage = "' + releaseStage + '";',
         'Bugsnag.notifyReleaseStages = ["' + envArray.join('","') + '"];',
         '}',
         '</script>'
