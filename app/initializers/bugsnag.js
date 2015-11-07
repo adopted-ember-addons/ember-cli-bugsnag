@@ -28,6 +28,13 @@ export default {
         Bugsnag.notifyException(generateError(cause, stack), message);
         console.error(stack);
       };
+
+      const router = container.lookup('router:main');
+      const originalDidTransition = router.didTransition || Ember.K;
+      router.didTransition = function() {
+        Bugsnag.refresh();
+        return originalDidTransition.apply(this, arguments);
+      };
     }
   }
 };
