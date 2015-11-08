@@ -24,23 +24,27 @@ module.exports = {
 
         bugsnagConfig = {
           apiKey: envApiKey,
-          notifyReleaseStages: envReleases.split(',')
+          libraryUrl: process.env['BUGSNAG_LIBRARY_URL'],
+          notifyReleaseStages: envReleases.split(','),
+          releaseStage: process.env['BUGSNAG_RELEASE_STAGE']
         };
       } else {
         bugsnagConfig = config.bugsnag;
       }
 
+      var libraryUrl = bugsnagConfig.libraryUrl || 'https://d2wy8f7a9ursnm.cloudfront.net/bugsnag-2.min.js';
+      var releaseStage = bugsnagConfig.releaseStage || config.environment;
       envArray = bugsnagConfig.notifyReleaseStages ? bugsnagConfig.notifyReleaseStages : [];
 
       content = [
         '<script ',
-        'src="https://d2wy8f7a9ursnm.cloudfront.net/bugsnag-2.min.js" ',
+        'src="' + libraryUrl + '" ',
         'data-appversion="' + config.currentRevision + '" ',
         'data-apikey="' + bugsnagConfig.apiKey + '">',
         '</script>',
         '<script>',
         'if (typeof Bugsnag !== "undefined") {',
-        'Bugsnag.releaseStage = "' + config.environment + '";',
+        'Bugsnag.releaseStage = "' + releaseStage + '";',
         'Bugsnag.notifyReleaseStages = ["' + envArray.join('","') + '"];',
         '}',
         '</script>'
