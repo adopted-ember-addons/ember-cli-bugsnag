@@ -1,6 +1,7 @@
 import Ember  from 'ember';
 import config from '../config/environment';
 import { getContext, generateError } from 'ember-cli-bugsnag/utils/errors';
+import { getMetaData } from '../utils/bugsnag';
 
 var currentEnv = config.environment;
 
@@ -16,19 +17,23 @@ export default {
 
       Ember.onerror = function (error) {
         Bugsnag.context = getContext(router);
-        Bugsnag.notifyException(error);
+        const metaData = getMetaData(error, container);
+        Bugsnag.notifyException(error, null, metaData);
         console.error(error.stack);
       };
 
       Ember.RSVP.on('error', function(error) {
         Bugsnag.context = getContext(router);
-        Bugsnag.notifyException(error);
+        const metaData = getMetaData(error, container);
+        Bugsnag.notifyException(error, null, metaData);
         console.error(error.stack);
       });
 
       Ember.Logger.error = function (message, cause, stack) {
         Bugsnag.context = getContext(router);
-        Bugsnag.notifyException(generateError(cause, stack), message);
+        const error = generateError(cause, stack);
+        const metaData = getMetaData(error, container);
+        Bugsnag.notifyException(error, message, metaData);
         console.error(stack);
       };
 
