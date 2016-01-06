@@ -7,29 +7,29 @@ var currentEnv = config.environment;
 export default {
   name: 'bugsnag-error-service',
 
-  initialize: function(container) {
+  initialize: function(instance) {
     if (typeof Bugsnag === 'undefined') { return; }
 
     if (currentEnv !== 'test' && Bugsnag.notifyReleaseStages.indexOf(currentEnv) !== -1) {
       Ember.onerror = function (error) {
-        Bugsnag.context = getContext(container.lookup('router:main'));
+        Bugsnag.context = getContext(instance.lookup('router:main'));
         Bugsnag.notifyException(error);
         console.error(error.stack);
       };
 
       Ember.RSVP.on('error', function(error) {
-        Bugsnag.context = getContext(container.lookup('router:main'));
+        Bugsnag.context = getContext(instance.lookup('router:main'));
         Bugsnag.notifyException(error);
         console.error(error.stack);
       });
 
       Ember.Logger.error = function (message, cause, stack) {
-        Bugsnag.context = getContext(container.lookup('router:main'));
+        Bugsnag.context = getContext(instance.lookup('router:main'));
         Bugsnag.notifyException(generateError(cause, stack), message);
         console.error(stack);
       };
 
-      const router = container.lookup('router:main');
+      const router = instance.lookup('router:main');
       const originalDidTransition = router.didTransition || Ember.K;
       router.didTransition = function() {
         Bugsnag.refresh();
