@@ -11,7 +11,8 @@ export default {
     if (typeof Bugsnag === 'undefined') { return; }
 
     if (currentEnv !== 'test' && Bugsnag.notifyReleaseStages.indexOf(currentEnv) !== -1) {
-      let router = instance.container.lookup('router:main');
+      let owner = instance.lookup ? instance : instance.container;
+      let router = owner.lookup('router:main');
 
       Ember.onerror = function (error) {
         Bugsnag.context = getContext(router);
