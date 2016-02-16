@@ -14,19 +14,21 @@ export default {
       let owner = instance.lookup ? instance : instance.container;
       let router = owner.lookup('router:main');
 
-      Ember.onerror = function (error) {
+      Ember.onerror = function(error) {
         Bugsnag.context = getContext(router);
         Bugsnag.notifyException(error);
         console.error(error.stack);
       };
 
       Ember.RSVP.on('error', function(error) {
-        Bugsnag.context = getContext(router);
-        Bugsnag.notifyException(error);
-        console.error(error.stack);
+        if (error.name !== 'TransitionAborted') {
+          Bugsnag.context = getContext(router);
+          Bugsnag.notifyException(error);
+          console.error(error.stack);
+        }
       });
 
-      Ember.Logger.error = function (message, cause, stack) {
+      Ember.Logger.error = function(message, cause, stack) {
         Bugsnag.context = getContext(router);
         Bugsnag.notifyException(generateError(cause, stack), message);
         console.error(stack);
