@@ -15,26 +15,11 @@ export default {
       let owner = instance.lookup ? instance : instance.container;
       let router = owner.lookup('router:main');
 
-      Ember.onerror = function (error) {
+      Ember.onerror = function(error) {
         Bugsnag.context = getContext(router);
-        const metaData = getMetaData(error, container);
+        const metaData = getMetaData(error, owner);
         Bugsnag.notifyException(error, null, metaData);
         console.error(error.stack);
-      };
-
-      Ember.RSVP.on('error', function(error) {
-        Bugsnag.context = getContext(router);
-        const metaData = getMetaData(error, container);
-        Bugsnag.notifyException(error, null, metaData);
-        console.error(error.stack);
-      });
-
-      Ember.Logger.error = function (message, cause, stack) {
-        Bugsnag.context = getContext(router);
-        const error = generateError(cause, stack);
-        const metaData = getMetaData(error, container);
-        Bugsnag.notifyException(error, message, metaData);
-        console.error(stack);
       };
 
       const originalDidTransition = router.didTransition || Ember.K;
