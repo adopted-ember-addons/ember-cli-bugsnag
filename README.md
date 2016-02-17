@@ -55,4 +55,18 @@ export function getMetaData(error, container) {
 ```
 
 ember-cli-bugsnag calls this method for every error and resports any data
-returned by it to Bugsnag as meta data for the respective error.
+returned by it to Bugsnag as meta data for the respective error. The returned
+metaData should be formatted to correspond with tabs in your interface. E.g.
+for an account tab
+
+```js
+return {
+  account: {
+    name: "Bugsnag",
+    plan: "premium",
+    beta_access: true
+  }
+};
+```
+
+See [the Bugsnag docs](https://bugsnag.com/docs/notifiers/js#metadata) for more information.
