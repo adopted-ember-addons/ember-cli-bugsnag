@@ -10,28 +10,33 @@ export default {
   initialize: function(instance) {
     if (typeof Bugsnag === 'undefined') { return; }
 
-    if (currentEnv !== 'test' && Bugsnag.notifyReleaseStages.indexOf(currentEnv) !== -1) {
-      let owner = instance.lookup ? instance : instance.container;
-      let router = owner.lookup('router:main');
+    const isBugsnagActive = currentEnv !== 'test' && Bugsnag.notifyReleaseStages.indexOf(currentEnv) !== -1;
+    let router = isBugsnagActive ? instance.container.lookup('router:main') : null;
 
-      Ember.onerror = function (error) {
+    Ember.onerror = function (error) {
+     if (isBugsnagActive) {
+          Bugsnag.context = getContext(router);
+          Bugsnag.notifyException(error);
+      }
+      console.error(error.stack);
+    };
+
+    Ember.RSVP.on('error', function(error) {
+      if (isBugsnagActive) {
         Bugsnag.context = getContext(router);
         Bugsnag.notifyException(error);
-        console.error(error.stack);
-      };
+      }
+      console.error(error.stack);
+    });
 
-      Ember.RSVP.on('error', function(error) {
-        Bugsnag.context = getContext(router);
-        Bugsnag.notifyException(error);
-        console.error(error.stack);
-      });
-
-      Ember.Logger.error = function (message, cause, stack) {
+    Ember.Logger.error = function (message, cause, stack) {
+      if (isBugsnagActive) {
         Bugsnag.context = getContext(router);
         Bugsnag.notifyException(generateError(cause, stack), message);
-        console.error(stack);
-      };
-
+      }
+      console.error(stack);
+    };
+    if(isBugsnagActive){
       const originalDidTransition = router.didTransition || Ember.K;
       router.didTransition = function() {
         Bugsnag.refresh();
