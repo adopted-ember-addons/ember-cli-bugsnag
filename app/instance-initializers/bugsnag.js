@@ -1,6 +1,6 @@
 import Ember  from 'ember';
 import config from '../config/environment';
-import { getContext, generateError } from 'ember-cli-bugsnag/utils/errors';
+import { getContext, generateError, getError } from 'ember-cli-bugsnag/utils/errors';
 
 var currentEnv = config.environment;
 
@@ -18,7 +18,7 @@ export default {
           Bugsnag.context = getContext(router);
           Bugsnag.notifyException(error);
       }
-      console.error(error.stack);
+      console.error(getError(error));
     };
 
     Ember.RSVP.on('error', function(error) {
@@ -26,7 +26,7 @@ export default {
         Bugsnag.context = getContext(router);
         Bugsnag.notifyException(error);
       }
-      console.error(error.stack);
+      console.error(getError(error));
     });
 
     Ember.Logger.error = function (message, cause, stack) {
@@ -34,7 +34,8 @@ export default {
         Bugsnag.context = getContext(router);
         Bugsnag.notifyException(generateError(cause, stack), message);
       }
-      console.error(stack);
+      var error = message || cause || stack || "Error";
+      console.error(error);
     };
     if(isBugsnagActive){
       const originalDidTransition = router.didTransition || Ember.K;
