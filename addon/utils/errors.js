@@ -18,7 +18,7 @@ export function generateError(cause, stack) {
   return error;
 }
 
-export default function getError(error) {
+export function getError(error) {
 	if (!error) {
 		return error;
 	}
