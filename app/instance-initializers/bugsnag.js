@@ -34,7 +34,7 @@ export default {
         Bugsnag.context = getContext(router);
         Bugsnag.notifyException(generateError(cause, stack), message);
       }
-      var error = message || cause || stack || "Error";
+      var error = cause || message || stack || "Error";
       console.error(error);
     };
     if(isBugsnagActive){
