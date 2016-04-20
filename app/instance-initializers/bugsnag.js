@@ -1,4 +1,4 @@
-import Ember  from 'ember';
+import Ember from 'ember';
 import config from '../config/environment';
 import { getContext, generateError, getError } from 'ember-cli-bugsnag/utils/errors';
 
@@ -8,37 +8,44 @@ export default {
   name: 'bugsnag-error-service',
 
   initialize: function(instance) {
-    if (typeof Bugsnag === 'undefined') { return; }
+    if (typeof Bugsnag === 'undefined') {
+      return;
+    }
 
-    const isBugsnagActive = currentEnv !== 'test' && Bugsnag.notifyReleaseStages.indexOf(currentEnv) !== -1;
-    let router = isBugsnagActive ? instance.container.lookup('router:main') : null;
+    const isBugsnagActive = Bugsnag.notifyReleaseStages.indexOf(currentEnv) !== -1;
+    const router = instance.container.lookup('router:main');
+    const getMetaData = instance.getBugsnagMetadata || (() => null);
 
-    Ember.onerror = function (error) {
-     if (isBugsnagActive) {
-          Bugsnag.context = getContext(router);
-          Bugsnag.notifyException(error);
+    Ember.onerror = function(error) {
+      if (!(error instanceof Error)) {
+        error = new Error(error);
       }
+
+      if (isBugsnagActive) {
+        Bugsnag.context = getContext(router);
+        Bugsnag.notifyException(error, getMetaData());
+      }
+
       console.error(getError(error));
     };
 
-    Ember.RSVP.on('error', function(error) {
+    Ember.Logger.error = function(message, cause, stack) {
       if (isBugsnagActive) {
         Bugsnag.context = getContext(router);
-        Bugsnag.notifyException(error);
-      }
-      console.error(getError(error));
-    });
 
-    Ember.Logger.error = function (message, cause, stack) {
-      if (isBugsnagActive) {
-        Bugsnag.context = getContext(router);
-        Bugsnag.notifyException(generateError(cause, stack), message);
+        if(cause && stack) {
+          Bugsnag.notifyException(generateError(cause, stack), message, getMetaData());
+        } else {
+          Bugsnag.notifyException(new Error(message), getMetaData());
+        }
       }
-      var error = message || cause || stack || "Error";
-      console.error(error);
+
+      console.error(message);
     };
-    if(isBugsnagActive){
+
+    if (isBugsnagActive) {
       const originalDidTransition = router.didTransition || Ember.K;
+
       router.didTransition = function() {
         Bugsnag.refresh();
         return originalDidTransition.apply(this, arguments);
