@@ -12,9 +12,10 @@ export default {
       return;
     }
 
+    const owner = instance.lookup ? instance : instance.container;
     const isBugsnagActive = Bugsnag.notifyReleaseStages.indexOf(currentEnv) !== -1;
-    const router = instance.container.lookup('router:main');
-    const getMetaData = instance.getBugsnagMetadata || (() => null);
+    const router = owner.lookup('router:main');
+    const getMetaData = instance.getBugsnagMetadata || (() => { return {}; });
 
     Ember.onerror = function(error) {
       const plain = !(error instanceof Error);
