@@ -17,13 +17,22 @@ export default {
     const getMetaData = instance.getBugsnagMetadata || (() => null);
 
     Ember.onerror = function(error) {
-      if (!(error instanceof Error)) {
+      const plain = !(error instanceof Error);
+
+      if (plain) {
         error = new Error(getError(error));
       }
 
       if (isBugsnagActive) {
+        const metadata = getMetaData();
+
+        // Group all plain errors by message.
+        if (plain) {
+          metadata.groupingHash = error.message;
+        }
+
         Bugsnag.context = getContext(router);
-        Bugsnag.notifyException(error, getMetaData());
+        Bugsnag.notifyException(error, metadata);
       }
 
       console.error(error);
@@ -31,12 +40,17 @@ export default {
 
     Ember.Logger.error = function(message, cause, stack) {
       if (isBugsnagActive) {
+        const metadata = getMetaData();
+
+        // Group all Logger.error by message.
+        metadata.groupingHash = message;
+
         Bugsnag.context = getContext(router);
 
         if(cause && stack) {
-          Bugsnag.notifyException(generateError(cause, stack), message, getMetaData());
+          Bugsnag.notifyException(generateError(cause, stack), message, metadata);
         } else {
-          Bugsnag.notifyException(new Error(message), getMetaData());
+          Bugsnag.notifyException(new Error(message), metadata);
         }
       }
 
