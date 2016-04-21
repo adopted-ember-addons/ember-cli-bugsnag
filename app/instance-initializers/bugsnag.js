@@ -18,7 +18,7 @@ export default {
 
     Ember.onerror = function(error) {
       if (!(error instanceof Error)) {
-        error = new Error(error);
+        error = new Error(getError(error));
       }
 
       if (isBugsnagActive) {
@@ -26,7 +26,7 @@ export default {
         Bugsnag.notifyException(error, getMetaData());
       }
 
-      console.error(getError(error));
+      console.error(error);
     };
 
     Ember.Logger.error = function(message, cause, stack) {
