@@ -46,6 +46,7 @@ module.exports = {
         'if (typeof Bugsnag !== "undefined") {',
         'Bugsnag.releaseStage = "' + releaseStage + '";',
         'Bugsnag.notifyReleaseStages = ["' + envArray.join('","') + '"];',
+        bugsnagConfig.endpoint ? 'Bugsnag.endpoint = ["' + bugsnagConfig.endpoint + '"];' : '',
         '}',
         '</script>'
       ];
