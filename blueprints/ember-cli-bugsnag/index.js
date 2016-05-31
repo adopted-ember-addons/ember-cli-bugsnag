@@ -7,9 +7,7 @@ module.exports = {
     // to us
   },
 
-  afterInstall: function() {
-    afterInstall: function(options) {
-      return this.addBowerPackageToProject('bugsnag', '~2.5.0');
-    }
+  afterInstall: function(options) {
+    return this.addBowerPackageToProject('bugsnag', '~2.5.0');
   }
 };
