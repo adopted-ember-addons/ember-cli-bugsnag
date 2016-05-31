@@ -16,6 +16,10 @@ module.exports = function(environment) {
     APP: {
       // Here you can pass flags/options to your application instance
       // when it is created
+    },
+
+    bugsnag: {
+      apiKey: "09e2825dc7b16fdbf7b207cf5b780064"
     }
   };
 
