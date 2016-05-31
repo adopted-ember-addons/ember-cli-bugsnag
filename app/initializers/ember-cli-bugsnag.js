@@ -27,7 +27,7 @@ export default {
     }
 
     if (!bugsnagConfig.notifyReleaseStages) {
-      console.warn('[ember-cli-bugsnag] Notify release stages not defined in configuration, defaulting to `["production"]`.');
+      console.warn('[ember-cli-bugsnag] Notify release stages not defined in configuration, defaulting to `["production"]`. Either define `bugsnag.notifyReleaseStages` in your config file or a comma separated environment variable BUGSNAG_NOTIFY_RELEASE');
       bugsnagConfig.notifyReleaseStages = ["production"]
     }
 

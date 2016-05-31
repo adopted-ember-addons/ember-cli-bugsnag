@@ -11,11 +11,9 @@ export default {
 
   initialize: function(instance) {
 
-    if (typeof Bugsnag === 'undefined') { return; }
-
-    var content = '';
-    var bugsnagConfig;
-    var envArray;
+    if (Bugsnag.apiKey === undefined) {
+      return;
+    }
 
     if (currentEnv !== 'test' && Bugsnag.notifyReleaseStages.indexOf(currentEnv) !== -1) {
       let owner = instance.lookup ? instance : instance.container;
