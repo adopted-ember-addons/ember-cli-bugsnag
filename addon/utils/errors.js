@@ -1,4 +1,7 @@
 import Ember from 'ember';
+import XHRError from './xhr-error';
+
+const { get, isNone } = Ember;
 
 export function getContext(router) {
   var infos = router.currentState.routerJsState.handlerInfos;
@@ -19,16 +22,28 @@ export function generateError(cause, stack) {
 }
 
 export function getError(error) {
-	if (!error) {
-		return error;
-	}
+  if (!error) {
+    return new Error();
+  }
 
-    // Trace exception.
-    return Ember.get(error, 'stack') || 
-        // Trace ENPP error.
-        Ember.get(error, 'responseJSON.result.errors.0.description') || 
-        // Trace ENAX error.
-        Ember.get(error, 'responseJSON.error-message') || 
-        // Trace plain error.
-        error; 
+  let message;
+
+  // Trace XHR JSON error.
+  if (!isNone(message = get(error, 'responseJSON'))) {
+    return new XHRError(JSON.stringify(message));
+  }
+
+  // Trace XHR Text error.
+  if (!isNone(message = get(error, 'responseText'))) {
+    return new XHRError(message);
+  }
+
+  // Trace XHR unknown error.
+  if (!isNone(message = get(error, 'status'))) {
+    const statusText = get(error, 'statusText');
+
+    return new XHRError(`status='${message}' statusText='${statusText}'`);
+  }
+
+  return new Error(error);
 }

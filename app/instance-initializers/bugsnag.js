@@ -21,7 +21,7 @@ export default {
       const plain = !(error instanceof Error);
 
       if (plain) {
-        error = new Error(getError(error));
+        error = getError(error);
       }
 
       if (isBugsnagActive) {
@@ -36,7 +36,7 @@ export default {
         Bugsnag.notifyException(error, metadata);
       }
 
-      console.error(error.message);
+      console.error(error.stack);
     };
 
     Ember.Logger.error = function(message, cause, stack) {
@@ -55,7 +55,11 @@ export default {
         }
       }
 
-      console.error(message);
+      if(cause && stack) {
+        console.error(message, cause, stack);
+      } else {
+        console.error(message);
+      }
     };
 
     if (isBugsnagActive) {
