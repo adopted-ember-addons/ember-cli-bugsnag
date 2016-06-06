@@ -2,6 +2,7 @@ import Ember  from 'ember';
 import config from '../config/environment';
 import { getContext, generateError } from 'ember-cli-bugsnag/utils/errors';
 import { getMetaData } from '../utils/bugsnag';
+import Bugsnag from 'bugsnag';
 
 var currentEnv = config.environment;
 
@@ -9,7 +10,10 @@ export default {
   name: 'bugsnag-error-service',
 
   initialize: function(instance) {
-    if (typeof Bugsnag === 'undefined') { return; }
+
+    if (Bugsnag.apiKey === undefined) {
+      return;
+    }
 
     if (currentEnv !== 'test' && Bugsnag.notifyReleaseStages.indexOf(currentEnv) !== -1) {
       let owner = instance.lookup ? instance : instance.container;
