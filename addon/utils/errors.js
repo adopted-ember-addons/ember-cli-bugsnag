@@ -31,18 +31,23 @@ export function getError(error) {
   // Trace XHR JSON error.
   if (!isNone(message = get(error, 'responseJSON'))) {
     return new XHRError(JSON.stringify(message));
-  }
-
   // Trace XHR Text error.
-  if (!isNone(message = get(error, 'responseText'))) {
+  } else if (!isNone(message = get(error, 'responseText'))) {
     return new XHRError(message);
-  }
-
   // Trace XHR unknown error.
-  if (!isNone(message = get(error, 'status'))) {
+  } else if (!isNone(message = get(error, 'status'))) {
     const statusText = get(error, 'statusText');
 
     return new XHRError(`status='${message}' statusText='${statusText}'`);
+  // Trace JSON objects.
+  } else if (typeof error === 'object') {
+    try {
+      message = JSON.stringify(error);
+
+      return new Error(message);
+    } catch(e) {
+      // NOOP.
+    }
   }
 
   return new Error(error);

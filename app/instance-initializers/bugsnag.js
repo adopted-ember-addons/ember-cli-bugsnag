@@ -55,10 +55,10 @@ export default {
         }
       }
 
-      if(cause && stack) {
-        console.error(message, cause, stack);
+      if(stack) {
+        console.error(stack);
       } else {
-        console.error(message);
+        console.error(message, cause);
       }
     };
 
