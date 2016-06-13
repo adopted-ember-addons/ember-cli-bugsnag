@@ -48,17 +48,19 @@ export default {
 
         Bugsnag.context = getContext(router);
 
-        if(cause && stack) {
+        if (cause && stack) {
           Bugsnag.notifyException(generateError(cause, stack), message, metadata);
         } else {
           Bugsnag.notifyException(new Error(message), metadata);
         }
       }
 
-      if(stack) {
+      if (stack) {
         console.error(stack);
-      } else {
+      } else if (cause) {
         console.error(message, cause);
+      } else {
+        console.error(message);
       }
     };
 
