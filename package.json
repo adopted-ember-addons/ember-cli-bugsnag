@@ -9,16 +9,16 @@
   "scripts": {
     "start": "ember server",
     "build": "ember build",
-    "test": "ember try:testall"
+    "test": "node node-tests/**/*-test.js && ember try:testall"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/twokul/ember-cli-bugsnag.git"
+    "url": "https://github.com/binhums/ember-cli-bugsnag.git"
   },
   "engines": {
     "node": ">= 0.10.0"
   },
-  "author": "Alex Navasardyan",
+  "author": "Alex Navasardyan, Ben Holmes",
   "license": "MIT",
   "devDependencies": {
     "broccoli-asset-rev": "^2.4.2",
