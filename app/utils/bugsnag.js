@@ -1,3 +1,3 @@
-export function getMetaData(error, container) {
+export function getMetaData(/* error, container */) {
   return {};
 }

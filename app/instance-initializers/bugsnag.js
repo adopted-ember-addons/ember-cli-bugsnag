@@ -1,6 +1,6 @@
 import Ember  from 'ember';
 import config from '../config/environment';
-import { getContext, generateError } from 'ember-cli-bugsnag/utils/errors';
+import { getContext } from 'ember-cli-bugsnag/utils/errors';
 import { getMetaData } from '../utils/bugsnag';
 import Bugsnag from 'bugsnag';
 
