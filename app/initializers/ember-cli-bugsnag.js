@@ -6,8 +6,9 @@ import BugsnagConfiguration from 'ember-cli-bugsnag/utils/bugsnag-configuration'
 export default {
   name: 'ember-cli-bugsnag',
 
-  initialize: function(/* instance */) {
+  initialize: function() {
     let configVariables = config.bugsnag;
-    new BugsnagConfiguration(configVariables).apply(Bugsnag);
+    let environment = config.environment;
+    new BugsnagConfiguration(configVariables, environment).apply(Bugsnag);
   }
 };

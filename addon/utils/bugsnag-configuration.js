@@ -1,6 +1,8 @@
 export default class BugsnagConfiguration {
-  constructor(config) {
+  constructor(config, environment) {
     this.config = config || {};
+
+    this.config.releaseStage = environment;
 
     this._setDefaultValues();
     this.valid = this._validate();
