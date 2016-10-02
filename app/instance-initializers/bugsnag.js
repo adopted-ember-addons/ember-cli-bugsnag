@@ -1,7 +1,8 @@
 import Ember  from 'ember';
 import config from '../config/environment';
 import { getContext } from 'ember-cli-bugsnag/utils/errors';
-import { getMetaData } from '../utils/bugsnag';
+import { getMetaData } from '../utils/bugsnag-get-metadata';
+import { getUser } from '../utils/bugsnag-get-user';
 import Bugsnag from 'bugsnag';
 
 var currentEnv = config.environment;
@@ -22,6 +23,12 @@ export default {
       Ember.onerror = function(error) {
         Bugsnag.context = getContext(router);
         const metaData = getMetaData(error, owner);
+        const user = getUser(owner);
+
+        if (user && typeof user === 'object') {
+          Bugsnag.user = user;
+        }
+
         Bugsnag.notifyException(error, null, metaData);
         console.error(error.stack);
       };
