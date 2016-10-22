@@ -4,8 +4,6 @@ import { getContext } from 'ember-cli-bugsnag/utils/errors';
 import { getMetaData } from '../utils/bugsnag';
 import Bugsnag from 'bugsnag';
 
-var currentEnv = config.environment;
-
 export default {
   name: 'bugsnag-error-service',
 
@@ -15,7 +13,11 @@ export default {
       return;
     }
 
-    if (currentEnv !== 'test' && Bugsnag.notifyReleaseStages.indexOf(currentEnv) !== -1) {
+    const currentEnv = config.environment;
+    const bugsnagConfig = config.bugsnag || {}
+    const releaseStage = bugsnagConfig.releaseStage || currentEnv;
+
+    if (currentEnv !== 'test' && Bugsnag.notifyReleaseStages.indexOf(releaseStage) !== -1) {
       let owner = instance.lookup ? instance : instance.container;
       let router = owner.lookup('router:main');
 
