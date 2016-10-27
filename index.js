@@ -6,6 +6,17 @@ var readEnvironmentConfig = require('./lib/environment-config').read;
 module.exports = {
   name: 'ember-cli-bugsnag',
 
+  options: {
+    nodeAssets: {
+      'bugsnag-js': function() {
+         return {
+           enabled: this._includeBugsnag,
+           import: ['src/bugsnag.js']
+        }
+      }
+    }
+  },
+
   config: function() {
     return {
       bugsnag: readEnvironmentConfig(process.env)
@@ -25,10 +36,10 @@ module.exports = {
   },
 
   included: function(app) {
-    this._super.included(app);
     this._includeBugsnag = this.isDevelopingAddon() || process.env.EMBER_ENV !== 'test';
+    this._super.included.apply(this, arguments);
+
     if (this._includeBugsnag) {
-      app.import(app.bowerDirectory + '/bugsnag/src/bugsnag.js');
       app.import('vendor/bugsnag/shim.js', {
         type: 'vendor',
         exports: {
