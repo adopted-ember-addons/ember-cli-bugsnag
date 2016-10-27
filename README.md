@@ -14,7 +14,7 @@ ember install ember-cli-bugsnag
 
 There are two ways to configure `ember-cli-bugsnag`:
 
-1. Add POJO to `config/environment`:
+- Add POJO to `config/environment`:
 
 ```javascript
 {
@@ -25,7 +25,22 @@ There are two ways to configure `ember-cli-bugsnag`:
 }
 ```
 
-2. Specify environment variables:
+The releaseStage defaults to the current application environment, if you
+need to set a different releaseStage that diverges from the environment, you
+can pass and additional attribute to the bugsnag configuration called
+`releaseStage`. It would look like this:
+
+```javascript
+{
+  bugsnag: {
+    apiKey: '',
+    notifyReleaseStages: ['development', 'production', 'staging'],
+    releaseStage: 'staging'
+  }
+}
+```
+
+- Specify environment variables:
 
 ```sh
 export BUGSNAG_API_KEY=''
