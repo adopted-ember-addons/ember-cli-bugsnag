@@ -36,9 +36,10 @@ module.exports = {
   },
 
   included: function(app) {
-    this._includeBugsnag = this.isDevelopingAddon() || process.env.EMBER_ENV !== 'test';
-    this._super.included.apply(this, arguments);
+    this._includeBugsnag = process.env.EMBER_CLI_FASTBOOT !== 'true' && (
+      this.isDevelopingAddon() || process.env.EMBER_ENV !== 'test');
 
+    this._super.included.apply(this, arguments);
     if (this._includeBugsnag) {
       app.import('vendor/bugsnag/shim.js', {
         type: 'vendor',
