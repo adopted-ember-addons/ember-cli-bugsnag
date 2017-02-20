@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import config from '../config/environment';
 import { getContext, generateError, getError } from 'ember-cli-bugsnag/utils/errors';
+import { getMetaData } from '../utils/bugsnag';
 import Bugsnag from 'bugsnag';
 
 export default {
@@ -15,7 +16,6 @@ export default {
     const bugsnagConfig = config.bugsnag || {};
     const releaseStage = bugsnagConfig.releaseStage || currentEnv;
     const isBugsnagActive = Bugsnag.notifyReleaseStages.indexOf(currentEnv) !== -1;
-    const getMetaData = instance.getBugsnagMetadata || (() => { return {}; });
     let owner = instance.lookup ? instance : instance.container;
     let router = owner.lookup('router:main');
 
@@ -27,7 +27,7 @@ export default {
       }
 
       if (isBugsnagActive) {
-        const metaData = getMetaData();
+        const metaData = getMetaData(error, owner);
 
         // Group all plain errors by message.
         if (plain) {
@@ -41,7 +41,7 @@ export default {
 
     Ember.Logger.error = function(message, cause, stack) {
       if (isBugsnagActive) {
-        const metadata = getMetaData();
+        const metadata = getMetaData(message, owner);
 
         // Group all Logger.error by message.
         metadata.groupingHash = message;
