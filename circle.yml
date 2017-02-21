@@ -5,8 +5,6 @@ machine:
     - mkdir -p ~/.yarn-cache
 
 dependencies:
-  pre:
-    - curl -o- -L https://yarnpkg.com/install.sh | bash
   cache_directories:
     - ~/.yarn-cache
   override:
