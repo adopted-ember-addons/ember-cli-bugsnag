@@ -1,6 +1,6 @@
 # Ember-cli-bugsnag
 
-[![Build Status](https://travis-ci.org/twokul/ember-cli-bugsnag.svg)](https://travis-ci.org/twokul/ember-cli-bugsnag)
+[![Build Status](https://circleci.com/gh/binhums/ember-cli-bugsnag.svg?style=shield&circle-token=:circle-token)](https://circleci.com/gh/binhums/ember-cli-bugsnag)
 
 ## Installation
 
