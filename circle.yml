@@ -1,16 +1,19 @@
 machine:
   node:
     version: 6.0.0
-    PATH: "${PATH}:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin"
+  pre:
+    - mkdir -p ~/.yarn-cache
 
 dependencies:
+  pre:
+    - curl -o- -L https://yarnpkg.com/install.sh | bash
+  cache_directories:
+    - ~/.yarn-cache
   override:
-    - yarn
+    - yarn install
   post:
     - yarn global add bower
     - bower install
-  cache_directories:
-    - ~/.cache/yarn
 
 test:
   override:
