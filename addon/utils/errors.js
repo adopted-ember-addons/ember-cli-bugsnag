@@ -26,21 +26,20 @@ export function getError(error) {
     return new Error();
   }
 
-  const method = get(error, 'resource.method');
-  const endpoint = get(error, 'resource.endpoint');
+  const resource = get(error, 'resource');
   let message;
 
   // Trace XHR JSON error.
   if (!isNone(message = get(error, 'responseJSON'))) {
-    return new XHRError(method, endpoint, JSON.stringify(message));
+    return new XHRError(resource, JSON.stringify(message));
   // Trace XHR Text error.
   } else if (!isNone(message = get(error, 'responseText'))) {
-    return new XHRError(method, endpoint, message);
+    return new XHRError(resource, message);
   // Trace XHR unknown error.
   } else if (!isNone(message = get(error, 'status'))) {
     const statusText = get(error, 'statusText');
 
-    return new XHRError(method, endpoint, `status='${message}' statusText='${statusText}'`);
+    return new XHRError(resource, `status='${message}' statusText='${statusText}'`);
   // Trace JSON objects.
   } else if (typeof error === 'object') {
     try {

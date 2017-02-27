@@ -1,10 +1,16 @@
+import Ember from 'ember';
 import ExtendableError from './extendable-error';
 
+const { get } = Ember;
+
 class XHRError extends ExtendableError {
-  constructor(method, endpoint, message = '') {
+  constructor(resource, message = '') {
     super(message);
 
-    if (endpoint && method) {
+    if (resource) {
+      const method = get(resource, 'method');
+      const endpoint = get(resource, 'endpoint');
+
       Object.defineProperty(this, 'message', {
         configurable: true,
         enumerable : false,
@@ -12,6 +18,8 @@ class XHRError extends ExtendableError {
         writable : true,
       });
     }
+
+    this.resource = resource;
   }
 }
 
