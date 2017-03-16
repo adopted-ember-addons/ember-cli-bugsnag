@@ -16,7 +16,7 @@
     "url": "https://github.com/binhums/ember-cli-bugsnag.git"
   },
   "engines": {
-    "node": ">= 4.4.0"
+    "node": ">= 4.2.6"
   },
   "author": "Alex Navasardyan, Ben Holmes",
   "license": "MIT",
