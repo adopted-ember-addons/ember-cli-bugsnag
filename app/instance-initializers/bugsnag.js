@@ -1,21 +1,23 @@
 import Ember from 'ember';
 import config from '../config/environment';
 import { getContext, generateError, getError } from 'ember-cli-bugsnag/utils/errors';
-
-var currentEnv = config.environment;
+import { getMetaData } from '../utils/bugsnag';
+import Bugsnag from 'bugsnag';
 
 export default {
   name: 'bugsnag-error-service',
 
   initialize: function(instance) {
-    if (typeof Bugsnag === 'undefined') {
+    if (!Bugsnag || Bugsnag.apiKey === undefined) {
       return;
     }
 
-    const owner = instance.lookup ? instance : instance.container;
+    const currentEnv = config.environment;
+    const bugsnagConfig = config.bugsnag || {};
+    const releaseStage = bugsnagConfig.releaseStage || currentEnv;
     const isBugsnagActive = Bugsnag.notifyReleaseStages.indexOf(currentEnv) !== -1;
-    const router = owner.lookup('router:main');
-    const getMetaData = instance.getBugsnagMetadata || (() => { return {}; });
+    let owner = instance.lookup ? instance : instance.container;
+    let router = owner.lookup('router:main');
 
     Ember.onerror = function(error) {
       const plain = !(error instanceof Error);
@@ -25,33 +27,31 @@ export default {
       }
 
       if (isBugsnagActive) {
-        const metadata = getMetaData();
+        const metaData = getMetaData(error, owner);
 
         // Group all plain errors by message.
         if (plain) {
-          metadata.groupingHash = error.message;
+          metaData.groupingHash = error.message;
         }
-
         Bugsnag.context = getContext(router);
-        Bugsnag.notifyException(error, metadata);
+        Bugsnag.notifyException(error, null, metaData);
       }
-
-      console.error(error.stack);
+      console.error(error.message, error.stack);
     };
 
     Ember.Logger.error = function(message, cause, stack) {
       if (isBugsnagActive) {
-        const metadata = getMetaData();
+        const metaData = getMetaData(message, owner);
 
         // Group all Logger.error by message.
-        metadata.groupingHash = message;
+        metaData.groupingHash = message;
 
         Bugsnag.context = getContext(router);
 
         if (cause && stack) {
-          Bugsnag.notifyException(generateError(cause, stack), message, metadata);
+          Bugsnag.notifyException(generateError(cause, stack), message, metaData);
         } else {
-          Bugsnag.notifyException(new Error(message), metadata);
+          Bugsnag.notifyException(new Error(message), metaData);
         }
       }
 
