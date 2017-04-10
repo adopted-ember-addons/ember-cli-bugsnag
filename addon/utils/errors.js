@@ -6,7 +6,7 @@ const { get, isNone } = Ember;
 export function getContext(router) {
   var infos = router.currentState.routerJsState.handlerInfos;
 
-  var url = router.get('location').getURL();
+  var url = router.get('location').getURL().split("?")[0];
   var routeName = infos[infos.length - 1].name;
 
   var firstSegments = routeName.replace(".index", "").replace(/\./g, ' ');
