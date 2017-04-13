@@ -28,7 +28,7 @@ export default {
         console.error(error.stack);
       };
 
-      const originalDidTransition = router.didTransition || Ember.K;
+      const originalDidTransition = router.didTransition || function() {};
       router.didTransition = function() {
         Bugsnag.refresh();
         return originalDidTransition.apply(this, arguments);
