@@ -64,10 +64,8 @@ export default {
 
   _setNotifyException(error) {
     const owner = get(this, 'owner');
-    if (getMetaData) {
-      const metaData = getMetaData(error, owner);
-      Bugsnag.notifyException(error, null, metaData);
-    }
+    const metaData = getMetaData(error, owner) || {};
+    Bugsnag.notifyException(error, null, metaData);
   },
 
   _setUser() {
