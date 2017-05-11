@@ -98,14 +98,28 @@ return {
 To correlate a specific user to an error and have the information appear in the
 User tab in the Bugsnag UI, send user data with each error data. Define a
 helper method `getUser` in the `app/utils/bugsnag.js` you created. `getUser`
-takes the container as an argument, e.g.:
+takes the container as an argument. For example, if you have a `currentUser`
+service that references a `user` model in your app:
 
 ```js
-export function getUser(container) {
+import Ember from 'ember';
+
+const {
+  getProperties
+} = Ember;
+
+export function getUser(owner) {
+  const currentUser = owner.lookup('service:current-user').get('user');
+  const {
+    email,
+    id,
+    fullName: name
+  } = getProperties(currentUser, 'email', 'id', 'fullName');
+
   return {
-    id: 7,
-    name: 'Conrad Irwin',
-    email: 'conrad@bugsnag.com'
+    email,
+    id,
+    name
   };
 }
 ```
