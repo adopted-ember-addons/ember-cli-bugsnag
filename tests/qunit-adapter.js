@@ -11,5 +11,5 @@ export default QUnitAdapter.extend({
     }
 
     this._super(...arguments);
-  },
+  }
 });

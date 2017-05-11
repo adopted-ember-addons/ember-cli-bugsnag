@@ -23,7 +23,7 @@ export function initialize(instance) {
 
     setProperties(this, {
       owner,
-      router,
+      router
     });
 
     Ember.onerror = (error) => this._onError(error);
@@ -76,5 +76,5 @@ export default {
       const user = getUser(owner);
       Bugsnag.user = user;
     }
-  },
+  }
 };

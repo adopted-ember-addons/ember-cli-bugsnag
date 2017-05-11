@@ -23,7 +23,7 @@ module('Unit | Instance Initializer | bugsnag', {
 // Replace this with your real tests.
 test('it works', function(assert) {
   set(this, 'Bugsnag', {
-    apiKey: '123',
+    apiKey: '123'
   });
   initialize(this.appInstance);
 

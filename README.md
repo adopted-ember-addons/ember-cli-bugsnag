@@ -105,7 +105,7 @@ export function getUser(container) {
   return {
     id: 7,
     name: 'Conrad Irwin',
-    email: 'conrad@bugsnag.com',
+    email: 'conrad@bugsnag.com'
   };
 }
 ```

@@ -9,7 +9,7 @@ test('getMetaData()', function(assert) {
     account: {
       name: 'Bugsnag',
       plan: 'premium',
-      beta_access: true,
+      beta_access: true
     },
   };
   assert.deepEqual(
@@ -24,7 +24,7 @@ test('getUser()', function(assert) {
   const expected = {
     id: 123,
     name: 'Dummy User',
-    email: 'dummy@example.com',
+    email: 'dummy@example.com'
   };
   assert.deepEqual(
     result,

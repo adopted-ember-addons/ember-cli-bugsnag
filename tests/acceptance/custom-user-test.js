@@ -27,7 +27,7 @@ test('with custom user set', function(assert) {
     const expected = {
       id: 123,
       name: 'Dummy User',
-      email: 'dummy@example.com',
+      email: 'dummy@example.com'
     };
     assert.deepEqual(
       Bugsnag.user,
