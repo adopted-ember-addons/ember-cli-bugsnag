@@ -14,7 +14,7 @@ ember install ember-cli-bugsnag
 
 There are two ways to configure `ember-cli-bugsnag`:
 
-- Add POJO to `config/environment`:
+1. Add POJO to `config/environment`:
 
 ```javascript
 {
@@ -40,7 +40,7 @@ can pass and additional attribute to the bugsnag configuration called
 }
 ```
 
-- Specify environment variables:
+2. Specify environment variables:
 
 ```sh
 export BUGSNAG_API_KEY=''
@@ -57,9 +57,18 @@ Configuration options:
 
 ## Customization
 
-In order to add custom meta data to errors reported to Bugsnag, define a
-helper method in `app/utils/bugsnag.js` that takes the error and the container
-as arguments, e.g.:
+In order to send additional data along with errors reported to Bugsnag, generate
+a utility named `bugsnag`:
+
+```sh
+ember g util bugsnag
+```
+
+### Custom Diagnostics ([docs](https://docs.bugsnag.com/platforms/browsers/#custom-diagnostics))
+
+To send custom meta data, define a helper method `getMetaData` in the
+`app/utils/bugsnag.js` you created. `getMetaData` takes the error and the
+container as arguments, e.g.:
 
 ```js
 export function getMetaData(error, container) {
@@ -69,10 +78,10 @@ export function getMetaData(error, container) {
 }
 ```
 
-ember-cli-bugsnag calls this method for every error and resports any data
+`ember-cli-bugsnag` calls this method for every error and reports any data
 returned by it to Bugsnag as meta data for the respective error. The returned
 metaData should be formatted to correspond with tabs in your interface. E.g.
-for an account tab
+for an Account tab:
 
 ```js
 return {
@@ -84,4 +93,19 @@ return {
 };
 ```
 
-See [the Bugsnag docs](https://bugsnag.com/docs/notifiers/js#metadata) for more information.
+### Identifying Users ([docs](https://docs.bugsnag.com/platforms/browsers/#identifying-users))
+
+To correlate a specific user to an error and have the information appear in the
+User tab in the Bugsnag UI, send user data with each error data. Define a
+helper method `getUser` in the `app/utils/bugsnag.js` you created. `getUser`
+takes the container as an argument, e.g.:
+
+```js
+export function getUser(container) {
+  return {
+    id: 7,
+    name: 'Conrad Irwin',
+    email: 'conrad@bugsnag.com',
+  };
+}
+```
