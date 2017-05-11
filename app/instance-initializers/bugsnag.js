@@ -1,7 +1,7 @@
 import Ember  from 'ember';
 import config from '../config/environment';
 import { getContext } from 'ember-cli-bugsnag/utils/errors';
-import { getMetaData, getUser } from '../utils/bugsnag';
+import * as appMethods from '../utils/bugsnag';
 import Bugsnag from 'bugsnag';
 
 const {
@@ -49,8 +49,8 @@ export default {
 
   _onError(error) {
     this._setContext();
-    this._setNotifyException(error);
     this._setUser();
+    this._setNotifyException(error);
 
     /* eslint-disable no-console */
     console.error(error.stack);
@@ -64,14 +64,14 @@ export default {
 
   _setNotifyException(error) {
     const owner = get(this, 'owner');
-    const metaData = getMetaData(error, owner) || {};
+    const metaData = appMethods.getMetaData ? appMethods.getMetaData(error, owner) : {};
     Bugsnag.notifyException(error, null, metaData);
   },
 
   _setUser() {
     const owner = get(this, 'owner');
-    if (getUser) {
-      const user = getUser(owner);
+    if (appMethods.getUser) {
+      const user = appMethods.getUser(owner);
       Bugsnag.user = user;
     }
   }
