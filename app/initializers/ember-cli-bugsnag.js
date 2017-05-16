@@ -11,7 +11,7 @@ export default {
     let releaseStage = config.bugsnag.releaseStage || config.environment;
 
     // Set currentRevision value as Bugsnag appVersion
-    configVariables.appVersion = config.currentRevision;
+    configVariables.appVersion = config.currentRevision || config.APP.version;
 
     new BugsnagConfiguration(configVariables, releaseStage).apply(Bugsnag);
   }
