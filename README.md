@@ -123,3 +123,10 @@ export function getUser(owner) {
   };
 }
 ```
+
+### Uploading Sourcemaps ([docs](https://docs.bugsnag.com/api/js-source-map-upload))
+
+Uploading sourcemaps to Bugsnag makes it easier to track down errors in your
+code because the stacktrace for each error in the Bugsnag UI highlights the
+exact line in your unminified source code. To send sourcemaps  Bugsnag, use the
+Ember CLI Deploy addon [`ember-cli-deploy-bugsnag`](https://github.com/IcarusWorks/ember-cli-deploy-bugsnag).
