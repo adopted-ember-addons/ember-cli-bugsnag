@@ -27,11 +27,11 @@ export default {
       }
 
       if (isBugsnagActive) {
-        const metaData = getMetaData(error, owner);
+        const metaData = getMetaData(error, owner) || {};
 
         // Group all plain errors by message.
         if (plain) {
-          metaData.groupingHash = error.message;
+          metaData.groupingHash = error ? error.message : 'No message found on error object';
         }
         Bugsnag.context = getContext(router);
         Bugsnag.notifyException(error, null, metaData);
@@ -41,7 +41,7 @@ export default {
 
     Ember.Logger.error = function(message, cause, stack) {
       if (isBugsnagActive) {
-        const metaData = getMetaData(message, owner);
+        const metaData = getMetaData(message, owner) || {};
 
         // Group all Logger.error by message.
         metaData.groupingHash = message;
