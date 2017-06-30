@@ -1,9 +1,13 @@
 /* globals Bugsnag */
 
 define('bugsnag', [], function() {
-  "use strict";
+  'use strict';
 
-  return {
-    'default': Bugsnag
-  };
+  if (typeof FastBoot === 'undefined') {
+    return {
+      default: Bugsnag
+    };
+  }
+
+  return { default: undefined };
 });

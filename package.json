@@ -50,7 +50,8 @@
   "dependencies": {
     "bugsnag-js": "^3.2.0",
     "ember-cli-babel": "^6.4.1",
-    "ember-cli-node-assets": "^0.2.2"
+    "ember-cli-node-assets": "^0.2.2",
+    "fastboot-transform": "^0.1.1"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config"
