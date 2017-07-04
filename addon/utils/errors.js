@@ -4,26 +4,31 @@ import XHRError from './xhr-error';
 const { get, isNone } = Ember;
 
 export function getContext(router) {
-  var infos = router.currentState.routerJsState.handlerInfos;
+  const infos = router.currentState.routerJsState.handlerInfos;
+  const url = router.get('location').getURL().split('?')[0];
+  const routeName = infos[infos.length - 1].name;
+  const firstSegments = routeName.replace('.index', '').replace(/\./g, ' ');
+  const prettyRouteName = Ember.String.capitalize(firstSegments);
 
-  var url = router.get('location').getURL().split("?")[0];
-  var routeName = infos[infos.length - 1].name;
-
-  var firstSegments = routeName.replace(".index", "").replace(/\./g, ' ');
-  var prettyRouteName = Ember.String.capitalize(firstSegments);
-
-  return prettyRouteName + " (" + routeName + ", " + url + ")";
+  return `${prettyRouteName} (${routeName}, ${url})`;
 }
 
 export function generateError(cause, stack) {
-  var error = new Error(cause);
+  const error = new Error(cause);
+
   error.stack = stack;
+
   return error;
 }
 
 export function getError(error) {
   if (!error) {
     return new Error();
+  }
+
+  // get jqXHR from rejection triggered by ember-http (RSVP promises).
+  if (error.jqXHR) {
+    error = error.jqXHR;
   }
 
   const resource = get(error, 'resource');
