@@ -20,7 +20,7 @@ There are two ways to configure `ember-cli-bugsnag`:
 {
   bugsnag: {
     apiKey: '',
-    notifyReleaseStages: ['development', 'production']
+    notifyReleaseStages: ['production']
   }
 }
 ```
@@ -34,7 +34,7 @@ can pass and additional attribute to the bugsnag configuration called
 {
   bugsnag: {
     apiKey: '',
-    notifyReleaseStages: ['development', 'production', 'staging'],
+    notifyReleaseStages: ['production', 'staging'],
     releaseStage: 'staging'
   }
 }
@@ -44,7 +44,7 @@ can pass and additional attribute to the bugsnag configuration called
 
 ```sh
 export BUGSNAG_API_KEY=''
-export BUGSNAG_NOTIFY_RELEASE='development,production'
+export BUGSNAG_NOTIFY_RELEASE='production,staging'
 ```
 
 Configuration options:
