@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import config from '../config/environment';
-import { getContext, generateError, getError } from 'ember-cli-bugsnag/utils/errors';
+import { getContext, generateError } from 'ember-cli-bugsnag/utils/errors';
 import { getMetaData } from '../utils/bugsnag';
 import Bugsnag from 'bugsnag';
 
@@ -22,21 +22,16 @@ export default {
     Ember.onerror = function(error) {
       const plain = !(error instanceof Error);
 
-      if (plain) {
-        error = getError(error);
-      }
+      if (!plain) {
+        if (isBugsnagActive) {
+          const metaData = getMetaData(error, owner) || {};
 
-      if (isBugsnagActive && !plain) {
-        const metaData = getMetaData(error, owner) || {};
-
-        // Group all plain errors by message.
-        if (plain) {
-          metaData.groupingHash = error ? error.message : 'No message found on error object';
+          Bugsnag.context = getContext(router);
+          Bugsnag.notifyException(error, null, metaData);
         }
-        Bugsnag.context = getContext(router);
-        Bugsnag.notifyException(error, null, metaData);
+
+        console.error(error.message, error.stack);
       }
-      console.error(error.message, error.stack);
     };
 
     Ember.Logger.error = function(message, cause, stack) {
