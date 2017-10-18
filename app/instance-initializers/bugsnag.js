@@ -26,7 +26,7 @@ export default {
         error = getError(error);
       }
 
-      if (isBugsnagActive) {
+      if (isBugsnagActive && !plain) {
         const metaData = getMetaData(error, owner) || {};
 
         // Group all plain errors by message.
