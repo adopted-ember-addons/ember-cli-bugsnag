@@ -47,7 +47,7 @@
     "ember-addon"
   ],
   "dependencies": {
-    "bugsnag-js": "3.3.3",
+    "bugsnag-js": "^3.0.6",
     "ember-cli-babel": "^5.1.6",
     "ember-cli-node-assets": "^0.1.4"
   },
