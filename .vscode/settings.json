@@ -1,0 +1,10 @@
+{
+    "search.exclude": {
+        "**/node_modules": true,
+        "**/bower_components": true,
+        "**/.node_modules.ember-try": true,
+        "**/dist": true,
+        "**/tmp": true,
+        "**/ember-cli-bugsnag": true
+    }
+}

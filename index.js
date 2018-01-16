@@ -11,7 +11,7 @@ module.exports = {
     nodeAssets: {
       'bugsnag-js': {
         vendor: {
-          srcDir: 'src',
+          srcDir: 'dist',
           destDir: 'bugsnag-js',
           include: ['bugsnag.js'],
 
@@ -24,8 +24,9 @@ module.exports = {
   },
 
   config: function() {
+    var envConfig = readEnvironmentConfig(process.env);
     return {
-      bugsnag: readEnvironmentConfig(process.env)
+      bugsnag: readEnvironmentConfig(envConfig)
     };
   },
 
@@ -41,12 +42,16 @@ module.exports = {
     }
   },
 
+  isDevelopingAddon() {
+    return true;
+  },
+
   included: function(app) {
+    console.log("Entered Included");
     this._includeBugsnag =
       this.isDevelopingAddon() || process.env.EMBER_ENV !== 'test';
 
     this._super.included.apply(this, arguments);
-
     if (this._includeBugsnag) {
       app.import('vendor/bugsnag-js/bugsnag.js');
 

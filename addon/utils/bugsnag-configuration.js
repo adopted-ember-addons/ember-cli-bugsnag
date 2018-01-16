@@ -10,9 +10,13 @@ export default class BugsnagConfiguration {
 
   apply(bugsnagInstance) {
     if (this.valid) {
-      Object.keys(this.config).forEach((key) => {
-        bugsnagInstance[key] = this.config[key];
-      });
+      // bugsnagInstance = bugsnag({
+      //   apiKey: this.config["apiKey"],
+      //   appVersion: this.config["appVersion"],
+      //   releaseStage: this.config.releaseStage,
+      //   notifyReleaseStages: this.config["notifyReleaseStages"],      
+      // });
+      bugsnagInstance["test"] = "test";
     } else {
       /* eslint-disable no-console */
       console.error('[ember-cli-bugsnag] Could not start Bugsnag reporting because of configuration issues');
