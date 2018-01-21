@@ -2,7 +2,7 @@ import { test, module } from 'qunit';
 import startApp from '../helpers/start-app';
 import destroyApp from '../helpers/destroy-app';
 import config from 'dummy/config/environment';
-import Bugsnag from 'bugsnag';
+
 
 module('Acceptance | custom user', {
   beforeEach() {
@@ -29,6 +29,7 @@ test('with custom user set', function(assert) {
       name: 'Dummy User',
       email: 'dummy@example.com'
     };
+    const Bugsnag = window.bugsnagClient;
     assert.deepEqual(
       Bugsnag.user,
       expected,

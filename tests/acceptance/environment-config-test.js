@@ -1,7 +1,7 @@
 import { test, module } from 'qunit';
 import startApp from '../helpers/start-app';
 import destroyApp from '../helpers/destroy-app';
-import Bugsnag from 'bugsnag';
+
 
 module('Acceptance | environment config', {
   beforeEach() {
@@ -17,6 +17,7 @@ test('visiting /environment-config', function(assert) {
   visit('/');
 
   andThen(function() {
+    const Bugsnag = window.bugsnagClient;
     assert.equal(Bugsnag.releaseStage, 'test');
   });
 });

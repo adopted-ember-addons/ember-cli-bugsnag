@@ -1,3 +1,4 @@
+/* globals bugsnag */
 export default class BugsnagConfiguration {
   constructor(config, releaseStage) {
     this.config = config || {};
@@ -8,15 +9,14 @@ export default class BugsnagConfiguration {
     this.valid = this._validate();
   }
 
-  apply(bugsnagInstance) {
+  apply(/* bugsnagInstance */) {
     if (this.valid) {
-      // bugsnagInstance = bugsnag({
-      //   apiKey: this.config["apiKey"],
-      //   appVersion: this.config["appVersion"],
-      //   releaseStage: this.config.releaseStage,
-      //   notifyReleaseStages: this.config["notifyReleaseStages"],      
-      // });
-      bugsnagInstance["test"] = "test";
+      window.bugsnagClient = bugsnag({
+        apiKey: this.config["apiKey"],
+        appVersion: this.config["appVersion"],
+        releaseStage: this.config.releaseStage,
+        notifyReleaseStages: this.config["notifyReleaseStages"],      
+      });
     } else {
       /* eslint-disable no-console */
       console.error('[ember-cli-bugsnag] Could not start Bugsnag reporting because of configuration issues');

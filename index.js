@@ -47,7 +47,6 @@ module.exports = {
   },
 
   included: function(app) {
-    console.log("Entered Included");
     this._includeBugsnag =
       this.isDevelopingAddon() || process.env.EMBER_ENV !== 'test';
 

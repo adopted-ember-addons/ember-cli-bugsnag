@@ -2,7 +2,6 @@ import Ember  from 'ember';
 import config from '../config/environment';
 import { getContext } from 'ember-cli-bugsnag/utils/errors';
 import * as appMethods from '../utils/bugsnag';
-import Bugsnag from 'bugsnag';
 
 const {
   get,
@@ -10,6 +9,8 @@ const {
 } = Ember;
 
 export function initialize(instance) {
+  let Bugsnag = window.bugsnagClient;
+
   if (Bugsnag.apiKey === undefined) {
     return;
   }
@@ -38,6 +39,8 @@ export default {
   initialize,
 
   _didTransition() {
+    let Bugsnag = window.bugsnagClient;
+
     const router = get(this, 'router');
     const originalDidTransition = router.didTransition || function() {};
 
@@ -50,7 +53,7 @@ export default {
   _onError(error) {
     this._setContext();
     this._setUser();
-    this._setNotifyException(error);
+    this._setNotify(error);
 
     /* eslint-disable no-console */
     console.error(error.stack);
@@ -58,17 +61,27 @@ export default {
   },
 
   _setContext() {
+    let Bugsnag = window.bugsnagClient;
+
     const router = get(this, 'router');
     Bugsnag.context = getContext(router);
   },
 
-  _setNotifyException(error) {
+  _setNotify(error) {
+    let Bugsnag = window.bugsnagClient;
+
     const owner = get(this, 'owner');
     const metaData = appMethods.getMetaData ? appMethods.getMetaData(error, owner) : {};
-    Bugsnag.notifyException(error, null, metaData);
+    const opts = {
+      severity: null,
+      metaData
+    }
+    Bugsnag.notify(error, opts);
   },
 
   _setUser() {
+    let Bugsnag = window.bugsnagClient;
+
     const owner = get(this, 'owner');
     if (appMethods.getUser) {
       const user = appMethods.getUser(owner);
