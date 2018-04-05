@@ -1,5 +1,5 @@
 import config from '../config/environment';
-import Bugsnag from 'bugsnag';
+import BugsnagClient from 'bugsnag';
 
 import BugsnagConfiguration from 'ember-cli-bugsnag/utils/bugsnag-configuration';
 
@@ -14,7 +14,7 @@ export default {
     configVariables.appVersion = config.currentRevision || config.APP.version;
 
     if (typeof FastBoot === 'undefined') {
-      new BugsnagConfiguration(configVariables, releaseStage).apply(Bugsnag);
+      new BugsnagConfiguration(configVariables, releaseStage).setup(BugsnagClient);
     }
   }
 };
