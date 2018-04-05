@@ -9,11 +9,14 @@ test('passes initialized values to bugsnag instance', function(assert) {
     notifyReleaseStages: ['test']
   }, 'insomnia');
 
-  let bugsnagInstance = {};
-  configuration.apply(bugsnagInstance);
-  assert.equal(bugsnagInstance['apiKey'], 'UALSCA319');
-  assert.equal(bugsnagInstance['releaseStage'], 'insomnia');
-  assert.deepEqual(bugsnagInstance['notifyReleaseStages'], ['test']);
+  let bugsnagConfig = {};
+  const bugsnagObject = function(_config) {
+    bugsnagConfig = _config
+  };
+  configuration.setup(bugsnagObject);
+  assert.equal(bugsnagConfig['apiKey'], 'UALSCA319');
+  assert.equal(bugsnagConfig['releaseStage'], 'insomnia');
+  assert.deepEqual(bugsnagConfig['notifyReleaseStages'], ['test']);
 });
 
 test('sets default a default for notifyReleaseStages', function(assert) {
@@ -21,15 +24,21 @@ test('sets default a default for notifyReleaseStages', function(assert) {
     apiKey: 'UALSCA319'
   }, 'insomnia');
 
-  let bugsnagInstance = {};
-  configuration.apply(bugsnagInstance);
-  assert.deepEqual(bugsnagInstance['notifyReleaseStages'], ['production']);
+  let bugsnagConfig = {};
+  const bugsnagObject = function(_config) {
+    bugsnagConfig = _config;
+  };
+  configuration.setup(bugsnagObject);
+  assert.deepEqual(bugsnagConfig['notifyReleaseStages'], ['production']);
 });
 
 test('does not set any values if there is a configuration problem', function(assert) {
   let configuration = new BugsnagConfiguration({});
 
-  let bugsnagInstance = {};
-  configuration.apply(bugsnagInstance);
-  assert.deepEqual(bugsnagInstance, {});
+  let bugsnagConfig = {};
+  const bugsnagObject = function(_config) {
+    bugsnagConfig = _config;
+  };
+  configuration.setup(bugsnagObject);
+  assert.deepEqual(bugsnagConfig, {});
 });
