@@ -48,8 +48,6 @@ export default {
   },
 
   _onError(error) {
-    this._setContext();
-    this._setUser();
     this._setNotifyException(error);
 
     /* eslint-disable no-console */
@@ -57,22 +55,28 @@ export default {
     /* eslint-enable no-console */
   },
 
-  _setContext() {
-    const router = get(this, 'router');
-    window.bugsnagClient.context = getContext(router);
-  },
-
   _setNotifyException(error) {
     const owner = get(this, 'owner');
     const metaData = appMethods.getMetaData ? appMethods.getMetaData(error, owner) : {};
-    window.bugsnagClient.notify(error);
+    const user = this._getUser();
+    const context = this._getContext();
+    window.bugsnagClient.notify(error, {
+      metaData,
+      user,
+      context,
+    });
   },
 
-  _setUser() {
+  _getContext() {
+    const router = get(this, 'router');
+    return getContext(router);
+  },
+
+  _getUser() {
     const owner = get(this, 'owner');
     if (appMethods.getUser) {
       const user = appMethods.getUser(owner);
-      window.bugsnagClient.user = user;
+      return user;
     }
   }
 };
