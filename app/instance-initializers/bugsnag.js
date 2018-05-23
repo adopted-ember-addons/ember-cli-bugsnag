@@ -1,8 +1,6 @@
 import Ember  from 'ember';
-import config from '../config/environment';
 import { getContext } from 'ember-cli-bugsnag/utils/errors';
 import * as appMethods from '../utils/bugsnag';
-import Bugsnag from 'bugsnag';
 
 const {
   get,
@@ -10,20 +8,16 @@ const {
 } = Ember;
 
 export function initialize(instance) {
-  if (Bugsnag.apiKey === undefined) {
-    return;
-  }
-  const currentEnv = config.environment;
-  const bugsnagConfig = config.bugsnag || {};
-  const releaseStage = bugsnagConfig.releaseStage || currentEnv;
+  const owner = instance.lookup ? instance : instance.container;
+  const client = owner.lookup('bugsnag:main');
 
-  if (currentEnv !== 'test' && Bugsnag.notifyReleaseStages.indexOf(releaseStage) !== -1) {
-    const owner = instance.lookup ? instance : instance.container;
+  if (client) {
     const router = owner.lookup('router:main');
 
     setProperties(this, {
       owner,
-      router
+      router,
+      client
     });
 
     Ember.onerror = (error) => this._onError(error);
@@ -39,10 +33,11 @@ export default {
 
   _didTransition() {
     const router = get(this, 'router');
+    const client = get(this, 'client');
     const originalDidTransition = router.didTransition || function() {};
 
     return function() {
-      Bugsnag.refresh();
+      client.refresh();
       return originalDidTransition.apply(this, arguments);
     };
   },
@@ -50,7 +45,7 @@ export default {
   _onError(error) {
     this._setContext();
     this._setUser();
-    this._setNotifyException(error);
+    this._notify(error);
 
     /* eslint-disable no-console */
     console.error(error.stack);
@@ -61,22 +56,27 @@ export default {
     }
   },
 
-  _setContext() {
-    const router = get(this, 'router');
-    Bugsnag.context = getContext(router);
-  },
-
-  _setNotifyException(error) {
-    const owner = get(this, 'owner');
-    const metaData = appMethods.getMetaData ? appMethods.getMetaData(error, owner) : {};
-    Bugsnag.notifyException(error, null, metaData);
-  },
-
   _setUser() {
     const owner = get(this, 'owner');
-    if (appMethods.getUser) {
-      const user = appMethods.getUser(owner);
-      Bugsnag.user = user;
-    }
+    const client = get(this, 'client');
+    const user = appMethods.getUser && appMethods.getUser(owner);
+
+    client.user = user;
+  },
+
+  _setContext() {
+    const router = get(this, 'router');
+    const client = get(this, 'client');
+    const context = getContext(router);
+
+    client.context = context;
+  },
+
+  _notify(error) {
+    const owner = get(this, 'owner');
+    const client = get(this, 'client');
+    const metaData = appMethods.getMetaData ? appMethods.getMetaData(error, owner) : {};
+
+    client.notify(error, { metaData });
   }
 };

@@ -2,7 +2,6 @@ import { test, module } from 'qunit';
 import startApp from '../helpers/start-app';
 import destroyApp from '../helpers/destroy-app';
 import config from 'dummy/config/environment';
-import Bugsnag from 'bugsnag';
 import Ember from 'ember';
 
 module('Acceptance | custom user', {
@@ -26,14 +25,16 @@ test('with custom user set', function(assert) {
   visit('/');
   click('button');
 
-  andThen(function() {
+  return andThen(() => {
+    const bugsnag = this.application.resolveRegistration('bugsnag:main');
     const expected = {
       id: 123,
       name: 'Dummy User',
       email: 'dummy@example.com'
     };
+
     assert.deepEqual(
-      Bugsnag.user,
+      bugsnag.user,
       expected,
       'Bugsnag.user should equal what\'s returned from bugsnag util getUser()'
     );

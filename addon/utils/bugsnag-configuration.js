@@ -1,27 +1,14 @@
 export default class BugsnagConfiguration {
   constructor(config, releaseStage) {
-    this.config = config || {};
+    config = config || {};
+    config.releaseStage = releaseStage;
 
-    this.config.releaseStage = releaseStage;
-
-    this._setDefaultValues();
-    this.valid = this._validate();
+    this._setDefaultValues(config);
+    this.config = this._validate(config) ? config : {};
   }
 
-  apply(bugsnagInstance) {
-    if (this.valid) {
-      Object.keys(this.config).forEach((key) => {
-        bugsnagInstance[key] = this.config[key];
-      });
-    } else {
-      /* eslint-disable no-console */
-      console.error('[ember-cli-bugsnag] Could not start Bugsnag reporting because of configuration issues');
-      /* eslint-enable no-console */
-    }
-  }
-
-  _validate() {
-    if (!this.config.apiKey) {
+  _validate(config) {
+    if (!config.apiKey) {
       /* eslint-disable no-console */
       console.error('[ember-cli-bugsnag] Required value `apiKey` was not configured. Please add it to `bugsnag.apiKey` in `config/environment` or define environment variable `BUGSNAG_API_KEY`');
       /* eslint-enable no-console */
@@ -30,12 +17,12 @@ export default class BugsnagConfiguration {
     return true;
   }
 
-  _setDefaultValues() {
-    if (!this.config.notifyReleaseStages) {
+  _setDefaultValues(config) {
+    if (!config.notifyReleaseStages) {
       /* eslint-disable no-console */
       console.info('[ember-cli-bugsnag] Notify release stages not defined in configuration, defaulting to `["production"]`. Either define `bugsnag.notifyReleaseStages` in your config file or a comma separated environment variable BUGSNAG_NOTIFY_RELEASE');
       /* eslint-enable no-console */
-      this.config.notifyReleaseStages = ["production"];
+      config.notifyReleaseStages = ["production"];
     }
   }
 }

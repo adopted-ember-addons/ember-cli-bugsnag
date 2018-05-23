@@ -11,10 +11,9 @@ module.exports = {
     nodeAssets: {
       'bugsnag-js': {
         vendor: {
-          srcDir: 'src',
+          srcDir: 'dist',
           destDir: 'bugsnag-js',
-          include: ['bugsnag.js'],
-
+          include: ['bugsnag*.js'],
           processTree(input) {
             return fastbootTransform(input);
           }

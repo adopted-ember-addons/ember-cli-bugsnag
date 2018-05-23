@@ -2,7 +2,6 @@ import { test, module } from 'qunit';
 import startApp from '../helpers/start-app';
 import destroyApp from '../helpers/destroy-app';
 import config from 'dummy/config/environment';
-import Bugsnag from 'bugsnag';
 
 module('Acceptance | custom release stage config', {
   beforeEach() {
@@ -19,7 +18,9 @@ module('Acceptance | custom release stage config', {
 test('setting bugsnag releaseStage override environment', function(assert) {
   visit('/');
 
-  andThen(function() {
-    assert.equal(Bugsnag.releaseStage, 'production');
+  return andThen(() => {
+    const bugsnag = this.application.resolveRegistration('bugsnag:main');
+
+    assert.equal(bugsnag.config.releaseStage, 'production');
   });
 });

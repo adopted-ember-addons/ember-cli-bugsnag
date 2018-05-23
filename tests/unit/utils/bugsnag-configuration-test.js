@@ -4,32 +4,26 @@ import { module, test } from 'qunit';
 module('Unit | Utility | bugsnag configuration');
 
 test('passes initialized values to bugsnag instance', function(assert) {
-  let configuration = new BugsnagConfiguration({
+  const configuration = new BugsnagConfiguration({
     apiKey: 'UALSCA319',
     notifyReleaseStages: ['test']
-  }, 'insomnia');
+  }, 'insomnia').config;
 
-  let bugsnagInstance = {};
-  configuration.apply(bugsnagInstance);
-  assert.equal(bugsnagInstance['apiKey'], 'UALSCA319');
-  assert.equal(bugsnagInstance['releaseStage'], 'insomnia');
-  assert.deepEqual(bugsnagInstance['notifyReleaseStages'], ['test']);
+  assert.equal(configuration['apiKey'], 'UALSCA319');
+  assert.equal(configuration['releaseStage'], 'insomnia');
+  assert.deepEqual(configuration['notifyReleaseStages'], ['test']);
 });
 
 test('sets default a default for notifyReleaseStages', function(assert) {
-  let configuration = new BugsnagConfiguration({
+  const configuration = new BugsnagConfiguration({
     apiKey: 'UALSCA319'
-  }, 'insomnia');
+  }, 'insomnia').config;
 
-  let bugsnagInstance = {};
-  configuration.apply(bugsnagInstance);
-  assert.deepEqual(bugsnagInstance['notifyReleaseStages'], ['production']);
+  assert.deepEqual(configuration['notifyReleaseStages'], ['production']);
 });
 
 test('does not set any values if there is a configuration problem', function(assert) {
-  let configuration = new BugsnagConfiguration({});
+  const configuration = new BugsnagConfiguration({}).config;
 
-  let bugsnagInstance = {};
-  configuration.apply(bugsnagInstance);
-  assert.deepEqual(bugsnagInstance, {});
+  assert.deepEqual(configuration, {});
 });
