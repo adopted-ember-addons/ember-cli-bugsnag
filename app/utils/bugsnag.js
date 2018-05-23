@@ -1,3 +1,1 @@
-export function getMetaData(/* error, container */) {
-  return {};
-}
+export { getMetaData, getUser } from 'ember-cli-bugsnag/utils/bugsnag';

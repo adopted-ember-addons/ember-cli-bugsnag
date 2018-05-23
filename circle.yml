@@ -1,8 +1,18 @@
 machine:
   node:
     version: 6.0.0
+  pre:
+    - mkdir -p ~/.yarn-cache
 
 dependencies:
+  cache_directories:
+    - ~/.yarn-cache
+  override:
+    - yarn install
   post:
-    - npm install -g bower
+    - yarn global add bower
     - bower install
+
+test:
+  override:
+    - yarn test
