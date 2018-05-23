@@ -14,7 +14,7 @@ ember install ember-cli-bugsnag
 
 There are two ways to configure `ember-cli-bugsnag`:
 
-- Add POJO to `config/environment`:
+1. Add POJO to `config/environment`:
 
 ```javascript
 {
