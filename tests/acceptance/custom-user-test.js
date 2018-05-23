@@ -3,6 +3,7 @@ import startApp from '../helpers/start-app';
 import destroyApp from '../helpers/destroy-app';
 import config from 'dummy/config/environment';
 import Bugsnag from 'bugsnag';
+import Ember from 'ember';
 
 module('Acceptance | custom user', {
   beforeEach() {
@@ -10,9 +11,11 @@ module('Acceptance | custom user', {
     this.cachedEnvValue = config.environment; // NOTE: cached so we can restore it
     config.environment = 'addon-test';
     this.application = startApp();
+    Ember.testing = false;
   },
 
   afterEach() {
+    Ember.testing = true;
     delete config.bugsnag.releaseStage;
     config.environment = this.cachedEnvValue; // NOTE: restore original value
     destroyApp(this.application);

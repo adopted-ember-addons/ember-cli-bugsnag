@@ -55,6 +55,10 @@ export default {
     /* eslint-disable no-console */
     console.error(error.stack);
     /* eslint-enable no-console */
+
+    if (Ember.testing) {
+      throw error;
+    }
   },
 
   _setContext() {
