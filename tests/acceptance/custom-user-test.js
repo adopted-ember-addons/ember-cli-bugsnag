@@ -33,6 +33,7 @@ test('with custom user set', function(assert) {
       email: 'dummy@example.com'
     };
 
+    assert.ok(bugsnag);
     assert.deepEqual(
       bugsnag.user,
       expected,

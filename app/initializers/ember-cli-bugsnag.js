@@ -12,14 +12,13 @@ export default {
 
     const configVariables = config.bugsnag || {};
     const releaseStage = config.bugsnag.releaseStage || config.environment;
-    const currentEnv = config.environment;
 
     // Set currentRevision value as Bugsnag appVersion
     configVariables.appVersion = config.currentRevision || config.APP.version;
 
     const bugsnagConfig = new BugsnagConfiguration(configVariables, releaseStage).config;
 
-    if (!bugsnagConfig.apiKey && currentEnv !== 'test' && bugsnagConfig.notifyReleaseStages.indexOf(releaseStage) !== -1) {
+    if (!bugsnagConfig.apiKey) {
       return;
     }
 

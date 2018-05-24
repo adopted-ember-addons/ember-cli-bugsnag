@@ -21,6 +21,7 @@ test('setting bugsnag releaseStage override environment', function(assert) {
   return andThen(() => {
     const bugsnag = this.application.resolveRegistration('bugsnag:main');
 
+    assert.ok(bugsnag);
     assert.equal(bugsnag.config.releaseStage, 'production');
   });
 });

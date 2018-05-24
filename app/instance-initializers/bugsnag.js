@@ -1,6 +1,7 @@
 import Ember  from 'ember';
 import { getContext } from 'ember-cli-bugsnag/utils/errors';
 import * as appMethods from '../utils/bugsnag';
+import config from '../config/environment';
 
 const {
   get,
@@ -11,7 +12,7 @@ export function initialize(instance) {
   const owner = instance.lookup ? instance : instance.container;
   const client = owner.lookup('bugsnag:main');
 
-  if (client) {
+  if (client && config.environment !== 'test' && client.config.notifyReleaseStages.includes(client.config.releaseStage)) {
     const router = owner.lookup('router:main');
 
     setProperties(this, {
