@@ -47,7 +47,10 @@ module.exports = {
     this._super.included.apply(this, arguments);
 
     if (this._includeBugsnag) {
-      app.import('vendor/bugsnag-js/bugsnag.js');
+      app.import({
+        development: 'vendor/bugsnag-js/bugsnag.js',
+        production: 'vendor/bugsnag-js/bugsnag.min.js'
+      });
 
       app.import('vendor/bugsnag/shim.js', {
         type: 'vendor',
