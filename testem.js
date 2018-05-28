@@ -39,6 +39,14 @@ module.exports = {
   "launch_in_dev": [
     "Chrome"
   ],
+	browser_args: {
+		Chrome: [
+			'--disable-gpu',
+			'--headless',
+			'--remote-debugging-port=0',
+			'--window-size=1440,900'
+		]
+	},
   reporter: reportFormat(),
   report_file: outputFile(),
   xunit_intermediate_output: true

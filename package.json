@@ -51,7 +51,8 @@
     "bugsnag-js": "^4.6.3",
     "ember-cli-babel": "^6.4.1",
     "ember-cli-node-assets": "^0.2.2",
-    "fastboot-transform": "^0.1.1"
+    "fastboot-transform": "^0.1.1",
+    "npm": "^5.10.0"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config"
