@@ -1,71 +1,83 @@
-import Ember from 'ember';
+import Ember  from 'ember';
+import { getContext } from 'ember-cli-bugsnag/utils/errors';
+import * as appMethods from '../utils/bugsnag';
 import config from '../config/environment';
-import { getContext, generateError } from 'ember-cli-bugsnag/utils/errors';
-import { getMetaData } from '../utils/bugsnag';
-import Bugsnag from 'bugsnag';
+
+const {
+  get,
+  setProperties,
+} = Ember;
+
+export function initialize(instance) {
+  const owner = instance.lookup ? instance : instance.container;
+  const client = owner.lookup('bugsnag:main');
+
+  if (client && config.environment !== 'test' && client.config.notifyReleaseStages.includes(client.config.releaseStage)) {
+    const router = owner.lookup('router:main');
+
+    setProperties(this, {
+      owner,
+      router,
+      client
+    });
+
+    Ember.onerror = (error) => this._onError(error);
+
+    router.didTransition = this._didTransition();
+  }
+}
 
 export default {
   name: 'bugsnag-error-service',
 
-  initialize: function(instance) {
-    if (!Bugsnag || Bugsnag.apiKey === undefined) {
-      return;
-    }
+  initialize,
 
-    const currentEnv = config.environment;
-    const bugsnagConfig = config.bugsnag || {};
-    const releaseStage = bugsnagConfig.releaseStage || currentEnv;
-    const isBugsnagActive = Bugsnag.notifyReleaseStages.indexOf(currentEnv) !== -1;
-    let owner = instance.lookup ? instance : instance.container;
-    let router = owner.lookup('router:main');
+  _didTransition() {
+    const router = get(this, 'router');
+    const client = get(this, 'client');
+    const originalDidTransition = router.didTransition || function() {};
 
-    Ember.onerror = function(error) {
-      const plain = !(error instanceof Error);
-
-      if (!plain) {
-        if (isBugsnagActive) {
-          const metaData = getMetaData(error, owner) || {};
-
-          Bugsnag.context = getContext(router);
-          Bugsnag.notifyException(error, null, metaData);
-        }
-
-        console.error(error.message, error.stack);
-      }
+    return function() {
+      client.refresh();
+      return originalDidTransition.apply(this, arguments);
     };
+  },
 
-    Ember.Logger.error = function(message, cause, stack) {
-      if (isBugsnagActive) {
-        const metaData = getMetaData(message, owner) || {};
+  _onError(error) {
+    this._setContext();
+    this._setUser();
+    this._notify(error);
 
-        // Group all Logger.error by message.
-        metaData.groupingHash = message;
+    /* eslint-disable no-console */
+    console.error(error.stack);
+    /* eslint-enable no-console */
 
-        Bugsnag.context = getContext(router);
-
-        if (cause && stack) {
-          Bugsnag.notifyException(generateError(cause, stack), message, metaData);
-        } else {
-          Bugsnag.notifyException(new Error(message), metaData);
-        }
-      }
-
-      if (stack) {
-        console.error(stack);
-      } else if (cause) {
-        console.error(message, cause);
-      } else {
-        console.error(message);
-      }
-    };
-
-    if (isBugsnagActive) {
-      const originalDidTransition = router.didTransition || Ember.K;
-
-      router.didTransition = function() {
-        Bugsnag.refresh();
-        return originalDidTransition.apply(this, arguments);
-      };
+    if (Ember.testing) {
+      throw error;
     }
+  },
+
+  _setUser() {
+    const owner = get(this, 'owner');
+    const client = get(this, 'client');
+    const user = appMethods.getUser && appMethods.getUser(owner);
+
+    client.user = user;
+  },
+
+  _setContext() {
+    const router = get(this, 'router');
+    const client = get(this, 'client');
+    const context = getContext(router);
+
+    client.context = context;
+  },
+
+  _notify(error) {
+    const owner = get(this, 'owner');
+    const client = get(this, 'client');
+    const metaData = appMethods.getMetaData ? appMethods.getMetaData(error, owner) : {};
+
+    client.notify(error, { metaData });
   }
 };

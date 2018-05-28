@@ -1,20 +1,27 @@
 ---
 language: node_js
-node_js:
-  - "6"
-
 sudo: false
+dist: trusty
+node_js: 'lts/*'
+
+addons:
+  chrome: stable
+  firefox: latest
 
 cache:
   directories:
+    - $HOME/.npm
     - node_modules
 
 env:
-  - EMBER_TRY_SCENARIO=default
-  - EMBER_TRY_SCENARIO=ember-1.13
-  - EMBER_TRY_SCENARIO=ember-release
-  - EMBER_TRY_SCENARIO=ember-beta
-  - EMBER_TRY_SCENARIO=ember-canary
+  global:
+    - MOZ_HEADLESS=1
+  matrix:
+    - EMBER_TRY_SCENARIO=default
+    - EMBER_TRY_SCENARIO=ember-1.13
+    - EMBER_TRY_SCENARIO=ember-release
+    - EMBER_TRY_SCENARIO=ember-beta
+    - EMBER_TRY_SCENARIO=ember-canary
 
 matrix:
   fast_finish: true
@@ -22,14 +29,18 @@ matrix:
     - env: EMBER_TRY_SCENARIO=ember-canary
 
 before_install:
-  - export PATH=/usr/local/phantomjs-2.0.0/bin:$PATH
-  - "npm config set spin false"
-  - "npm install -g npm@^2"
+  - npm config set spin false
+  - npm --version
 
 install:
   - npm install -g bower
   - npm install
   - bower install
 
+before_script:
+  - sudo chown root /opt/google/chrome/chrome-sandbox
+  - sudo chmod 4755 /opt/google/chrome/chrome-sandbox
+
 script:
-  - ember try $EMBER_TRY_SCENARIO test
+  - node node-tests/**/*-test.js
+  - npx ember try:one $EMBER_TRY_SCENARIO --skip-cleanup
