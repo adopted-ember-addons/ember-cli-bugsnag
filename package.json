@@ -48,7 +48,7 @@
     "ember-addon"
   ],
   "dependencies": {
-    "bugsnag-js": "^4.6.3",
+    "bugsnag-js": "git+https://github.com/BBVAEngineering/bugsnag-js.git#v4.6.4",
     "ember-cli-babel": "^6.4.1",
     "ember-cli-node-assets": "^0.2.2",
     "fastboot-transform": "^0.1.1",
