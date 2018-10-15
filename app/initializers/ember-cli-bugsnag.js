@@ -8,7 +8,7 @@ export default {
 
   initialize: function() {
     let configVariables = config.bugsnag || {};
-    let releaseStage = config.bugsnag.releaseStage || config.environment;
+    let releaseStage = configVariables.releaseStage || config.environment;
 
     // Set currentRevision value as Bugsnag appVersion
     configVariables.appVersion = config.currentRevision || config.APP.version;
