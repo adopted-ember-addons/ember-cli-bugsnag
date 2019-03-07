@@ -44,16 +44,27 @@ export default {
   },
 
   _onError(error) {
+    if (!error || typeof error !== 'object' || !error.name || !error.message) {
+      error = this._formatUnknownError(error);
+    }
+
     this._setContext();
     this._setUser();
     this._notify(error);
 
     /* eslint-disable no-console */
-    console.error(error.stack);
+    console.error(error.stack || error.message);
     /* eslint-enable no-console */
 
     if (Ember.testing) {
       throw error;
+    }
+  },
+
+  _formatUnknownError(error) {
+    return {
+      name: (error && error.name) || 'UnknownError',
+      message: (error && error.message) || String(error)
     }
   },
 
