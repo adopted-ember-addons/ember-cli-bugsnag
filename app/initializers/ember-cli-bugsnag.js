@@ -1,10 +1,10 @@
-import config from '../config/environment';
-import BugsnagClient from 'bugsnag';
+import config from "../config/environment";
+import bugsnag from "@bugsnag/js";
 
-import BugsnagConfiguration from 'ember-cli-bugsnag/utils/bugsnag-configuration';
+import BugsnagConfiguration from "ember-cli-bugsnag/utils/bugsnag-configuration";
 
 export default {
-  name: 'ember-cli-bugsnag',
+  name: "ember-cli-bugsnag",
 
   initialize: function() {
     let configVariables = config.bugsnag || {};
@@ -13,8 +13,6 @@ export default {
     // Set currentRevision value as Bugsnag appVersion
     configVariables.appVersion = config.currentRevision || config.APP.version;
 
-    if (typeof FastBoot === 'undefined') {
-      new BugsnagConfiguration(configVariables, releaseStage).setup(BugsnagClient);
-    }
+    new BugsnagConfiguration(configVariables, releaseStage).setup(bugsnag);
   }
 };

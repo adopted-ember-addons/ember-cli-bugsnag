@@ -1,19 +1,17 @@
-import Ember from 'ember';
+import { capitalize } from "@ember/string";
 
 export function getContext(router) {
-  var infos = router.currentState.routerJsState.handlerInfos;
+  const url = router.get("currentURL"); // e.g., /subscription/:id/billing
+  const routeName = router.get("currentRouteName"); // e.g., subscription.billing.index
 
-  var url = router.get('location').getURL();
-  var routeName = infos[infos.length - 1].name;
-
-  var firstSegments = routeName.replace(".index", "").replace(/\./g, ' ');
-  var prettyRouteName = Ember.String.capitalize(firstSegments);
+  const firstSegments = routeName.replace(".index", "").replace(/\./g, " ");
+  const prettyRouteName = capitalize(firstSegments);
 
   return prettyRouteName + " (" + routeName + ", " + url + ")";
 }
 
 export function generateError(cause, stack) {
-  var error = new Error(cause);
+  const error = new Error(cause);
   error.stack = stack;
   return error;
 }
