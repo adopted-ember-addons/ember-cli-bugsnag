@@ -1,21 +1,74 @@
+<<<<<<< HEAD
 # Ember-cli-bugsnag
+||||||| parent of b961f78... message
+# my-addon
+=======
+my-addon
+==============================================================================
+>>>>>>> b961f78... message
 
+<<<<<<< HEAD
 [![Build Status](https://circleci.com/gh/binhums/ember-cli-bugsnag.svg?style=shield&circle-token=:circle-token)](https://circleci.com/gh/binhums/ember-cli-bugsnag)
+||||||| parent of b961f78... message
+This README outlines the details of collaborating on this Ember addon.
+=======
+[Short description of the addon.]
+>>>>>>> b961f78... message
 
-## Installation
 
+<<<<<<< HEAD
 Install the addon:
+||||||| parent of b961f78... message
+* `git clone <repository-url>` this repository
+* `cd my-addon`
+* `npm install`
+=======
+Compatibility
+------------------------------------------------------------------------------
+>>>>>>> b961f78... message
 
+<<<<<<< HEAD
 ```sh
 ember install ember-cli-bugsnag
 ```
+||||||| parent of b961f78... message
+## Running
+=======
+* Ember.js v3.4 or above
+* Ember CLI v2.13 or above
+* Node.js v8 or above
+>>>>>>> b961f78... message
 
+<<<<<<< HEAD
 ## Configuration
+||||||| parent of b961f78... message
+* `ember serve`
+* Visit your app at [http://localhost:4200](http://localhost:4200).
+=======
+>>>>>>> b961f78... message
 
+<<<<<<< HEAD
 There are two ways to configure `ember-cli-bugsnag`:
+||||||| parent of b961f78... message
+## Running Tests
+=======
+Installation
+------------------------------------------------------------------------------
+>>>>>>> b961f78... message
 
+<<<<<<< HEAD
 1. Add POJO to `config/environment`:
+||||||| parent of b961f78... message
+* `npm test` (Runs `ember try:each` to test your addon against multiple Ember versions)
+* `ember test`
+* `ember test --server`
+=======
+```
+ember install my-addon
+```
+>>>>>>> b961f78... message
 
+<<<<<<< HEAD
 ```javascript
 {
   bugsnag: {
@@ -24,12 +77,24 @@ There are two ways to configure `ember-cli-bugsnag`:
   }
 }
 ```
+||||||| parent of b961f78... message
+## Building
+=======
+>>>>>>> b961f78... message
 
+<<<<<<< HEAD
 The releaseStage defaults to the current application environment, if you
 need to set a different releaseStage that diverges from the environment, you
 can pass and additional attribute to the bugsnag configuration called
 `releaseStage`. It would look like this:
+||||||| parent of b961f78... message
+* `ember build`
+=======
+Usage
+------------------------------------------------------------------------------
+>>>>>>> b961f78... message
 
+<<<<<<< HEAD
 ```javascript
 {
   bugsnag: {
@@ -132,3 +197,20 @@ Uploading sourcemaps to Bugsnag makes it easier to track down errors in your
 code because the stacktrace for each error in the Bugsnag UI highlights the
 exact line in your unminified source code. To send sourcemaps  Bugsnag, use the
 Ember CLI Deploy addon [`ember-cli-deploy-bugsnag`](https://github.com/IcarusWorks/ember-cli-deploy-bugsnag).
+||||||| parent of b961f78... message
+For more information on using ember-cli, visit [https://ember-cli.com/](https://ember-cli.com/).
+=======
+[Longer description of how to use the addon in apps.]
+
+
+Contributing
+------------------------------------------------------------------------------
+
+See the [Contributing](CONTRIBUTING.md) guide for details.
+
+
+License
+------------------------------------------------------------------------------
+
+This project is licensed under the [MIT License](LICENSE.md).
+>>>>>>> b961f78... message
