@@ -10,7 +10,6 @@
 
 # misc
 /.env*
-/.pnp*
 /.sass-cache
 /connect.lock
 /coverage/
@@ -18,6 +17,8 @@
 /npm-debug.log*
 /testem.log
 /yarn-error.log
+/tags*
+/.nyc_output
 
 # ember-try
 /.node_modules.ember-try/

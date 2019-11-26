@@ -8,13 +8,18 @@
 # misc
 /.bowerrc
 /.editorconfig
-/.ember-cli.js
+/.ember-cli
 /.env*
 /.eslintignore
 /.eslintrc.js
-/.git/
 /.gitignore
 /.template-lintrc.js
+/.commitlintrc.js
+/.huskyrc.js
+/.nycrc.json
+/.releaserc
+/greenkeeper.json
+/jsconfig.json
 /.travis.yml
 /.watchmanconfig
 /bower.json
