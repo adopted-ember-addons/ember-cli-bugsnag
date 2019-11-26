@@ -1,12 +1,8 @@
+import { setProperties, get } from '@ember/object';
 import Ember  from 'ember';
 import { getContext } from 'ember-cli-bugsnag/utils/errors';
 import * as appMethods from '../utils/bugsnag';
 import config from '../config/environment';
-
-const {
-  get,
-  setProperties,
-} = Ember;
 
 export function initialize(instance) {
   const owner = instance.lookup ? instance : instance.container;

@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import { capitalize } from '@ember/string';
 
 export function getContext(router) {
   var infos = router.currentState.routerJsState.handlerInfos;
@@ -7,7 +7,7 @@ export function getContext(router) {
   var routeName = infos[infos.length - 1].name;
 
   var firstSegments = routeName.replace(".index", "").replace(/\./g, ' ');
-  var prettyRouteName = Ember.String.capitalize(firstSegments);
+  var prettyRouteName = capitalize(firstSegments);
 
   return prettyRouteName + " (" + routeName + ", " + url + ")";
 }
