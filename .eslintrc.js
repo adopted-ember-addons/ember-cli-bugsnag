@@ -27,6 +27,7 @@ module.exports = {
 			'testem.js',
 			'blueprints/*/index.js',
 			'config/**/*.js',
+			'lib/**/*.js',
 			'tests/dummy/config/**/*.js'
 		],
 		excludedFiles: [
@@ -37,7 +38,7 @@ module.exports = {
 		],
 		parserOptions: {
 			sourceType: 'script',
-			ecmaVersion: 2015
+			ecmaVersion: 2017
 		},
 		env: {
 			browser: false,
