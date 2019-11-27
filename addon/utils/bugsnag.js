@@ -1,7 +1,7 @@
 export function getMetaData(/* error, container */) {
-  return {};
+	return {};
 }
 
 export function getUser(/* container */) {
-  return {};
+	return {};
 }
