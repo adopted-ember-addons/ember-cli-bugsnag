@@ -1,4 +1,4 @@
-export function getMetaData(/* error, container */) {
+export async function getMetaData(/* error, container */) {
 	return {};
 }
 

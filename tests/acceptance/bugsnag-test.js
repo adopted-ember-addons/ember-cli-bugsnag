@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import { visit } from '@ember/test-helpers';
+import { settled, visit } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import sinon from 'sinon';
 import Ember from 'ember';
@@ -26,6 +26,8 @@ module('Acceptance | bugsnag', (hooks) => {
 			// noop
 		}
 
+		await settled();
+
 		assert.ok(this.bugsnag.notify.calledOnceWith(error));
 	});
 
@@ -43,6 +45,8 @@ module('Acceptance | bugsnag', (hooks) => {
 			// noop
 		}
 
+		await settled();
+
 		assert.equal(this.bugsnag.user, user);
 	});
 
@@ -57,6 +61,8 @@ module('Acceptance | bugsnag', (hooks) => {
 			// noop
 		}
 
+		await settled();
+
 		assert.equal(this.bugsnag.context, 'foo (/foo)');
 	});
 
@@ -64,7 +70,7 @@ module('Acceptance | bugsnag', (hooks) => {
 		const error = new Error('foo');
 		const metaData = { foo: 'bar' };
 
-		sinon.stub(appMethods, 'getMetaData').returns(metaData);
+		sinon.stub(appMethods, 'getMetaData').resolves(metaData);
 
 		await visit('/foo');
 
@@ -73,6 +79,8 @@ module('Acceptance | bugsnag', (hooks) => {
 		} catch (e) {
 			// noop
 		}
+
+		await settled();
 
 		assert.ok(this.bugsnag.notify.calledOnceWith(error, { metaData }));
 	});
@@ -92,6 +100,8 @@ module('Acceptance | bugsnag', (hooks) => {
 
 		Ember.onerror();
 
+		await settled();
+
 		assert.ok(this.bugsnag.notify.notCalled);
 	});
 
@@ -103,6 +113,8 @@ module('Acceptance | bugsnag', (hooks) => {
 		} catch (e) {
 			// noop
 		}
+
+		await settled();
 
 		assert.ok(this.bugsnag.notify.calledOnce);
 
@@ -128,8 +140,11 @@ module('Acceptance | bugsnag', (hooks) => {
 			// noop
 		}
 
+		await settled();
+
 		assert.ok(this.bugsnag.notify.calledOnceWith(error));
 
+		// eslint-disable-next-line require-atomic-updates
 		appMethods.getMetaData = getMetaData;
 	});
 });

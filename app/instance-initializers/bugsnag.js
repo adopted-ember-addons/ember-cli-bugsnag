@@ -89,10 +89,10 @@ export default {
 		client.context = context;
 	},
 
-	_notify(error) {
+	async _notify(error) {
 		const owner = get(this, 'owner');
 		const client = get(this, 'client');
-		const metaData = appMethods.getMetaData ? appMethods.getMetaData(error, owner) : {};
+		const metaData = appMethods.getMetaData ? await appMethods.getMetaData(error, owner) : {};
 
 		client.notify(error, { metaData });
 	}

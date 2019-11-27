@@ -1,10 +1,10 @@
-export function getMetaData() {
+export async function getMetaData() {
 	return {
 		account: {
 			name: 'Bugsnag',
 			plan: 'premium',
 			beta_access: true
-		},
+		}
 	};
 }
 

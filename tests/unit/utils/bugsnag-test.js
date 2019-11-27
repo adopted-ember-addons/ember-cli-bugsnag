@@ -2,8 +2,8 @@ import { getMetaData, getUser } from 'dummy/utils/bugsnag';
 import { module, test } from 'qunit';
 
 module('Unit | Utility | bugsnag', () => {
-	test('getMetaData()', (assert) => {
-		const result = getMetaData();
+	test('getMetaData()', async(assert) => {
+		const result = await getMetaData();
 		const expected = {
 			account: {
 				name: 'Bugsnag',
