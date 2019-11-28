@@ -1,6 +1,16 @@
-# Ember-cli-bugsnag
+# ember-cli-bugsnag
 
-[![Build Status](https://circleci.com/gh/binhums/ember-cli-bugsnag.svg?style=shield&circle-token=:circle-token)](https://circleci.com/gh/binhums/ember-cli-bugsnag)
+[![Build Status](https://travis-ci.com/BBVAEngineering/ember-cli-bugsnag.svg?branch=master)](https://travis-ci.com/BBVAEngineering/ember-cli-bugsnag)
+[![GitHub version](https://badge.fury.io/gh/BBVAEngineering%2Fember-cli-bugsnag.svg)](https://badge.fury.io/gh/BBVAEngineering%2Fember-cli-bugsnag)
+[![NPM version](https://badge.fury.io/js/ember-cli-bugsnag.svg)](https://badge.fury.io/js/ember-cli-bugsnag)
+[![Dependency Status](https://david-dm.org/BBVAEngineering/ember-cli-bugsnag.svg)](https://david-dm.org/BBVAEngineering/ember-cli-bugsnag)
+[![codecov](https://codecov.io/gh/BBVAEngineering/ember-cli-bugsnag/branch/master/graph/badge.svg)](https://codecov.io/gh/BBVAEngineering/ember-cli-bugsnag)
+[![Greenkeeper badge](https://badges.greenkeeper.io/BBVAEngineering/ember-cli-bugsnag.svg)](https://greenkeeper.io/)
+[![Ember Observer Score](https://emberobserver.com/badges/ember-cli-bugsnag.svg)](https://emberobserver.com/addons/ember-cli-bugsnag)
+
+## Information
+
+[![NPM](https://nodei.co/npm/ember-cli-bugsnag.png?downloads=true&downloadRank=true)](https://nodei.co/npm/ember-cli-bugsnag/)
 
 Install the addon:
 
