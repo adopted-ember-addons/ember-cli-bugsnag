@@ -1,3 +1,10 @@
+## [2.0.1](https://github.com/BBVAEngineering/ember-cli-bugsnag/compare/v2.0.0...v2.0.1) (2019-11-28)
+
+
+### Bug Fixes
+
+* **release:** restore npm without publish ([8f0b7fe](https://github.com/BBVAEngineering/ember-cli-bugsnag/commit/8f0b7fe7fab76812c6c8d6c2b85cb027e4d2a6f1))
+
 # [2.0.0](https://github.com/BBVAEngineering/ember-cli-bugsnag/compare/v1.4.1...v2.0.0) (2019-11-28)
 
 
