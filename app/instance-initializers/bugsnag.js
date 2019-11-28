@@ -1,94 +1,99 @@
-import Ember  from 'ember';
-import { getContext } from 'ember-cli-bugsnag/utils/errors';
+import { setProperties, get } from '@ember/object';
+import Ember from 'ember';
 import * as appMethods from '../utils/bugsnag';
-import config from '../config/environment';
 
-const {
-  get,
-  setProperties,
-} = Ember;
+class UnknownError extends Error {
+	constructor(message) {
+		super(message);
+		this.name = this.constructor.name;
+	}
+}
+
+function getContext(router) {
+	return `${router.currentRouteName} (${router.currentURL})`;
+}
 
 export function initialize(instance) {
-  const owner = instance.lookup ? instance : instance.container;
-  const client = owner.lookup('bugsnag:main');
+	const owner = instance.lookup ? instance : instance.container;
+	const client = owner.lookup('bugsnag:main');
 
-  if (client && config.environment !== 'test' && client.config.notifyReleaseStages.includes(client.config.releaseStage)) {
-    const router = owner.lookup('router:main');
+	if (client && client.config.notifyReleaseStages.includes(client.config.releaseStage)) {
+		const routerService = owner.lookup('service:router');
+		const router = owner.lookup('router:main');
 
-    setProperties(this, {
-      owner,
-      router,
-      client
-    });
+		if (routerService && routerService.on) {
+			routerService.on('routeDidChange', this.didTransition.bind(this));
+		} else {
+			router.on('didTransition', this.didTransition.bind(this));
+		}
 
-    Ember.onerror = (error) => this._onError(error);
+		setProperties(this, {
+			owner,
+			router,
+			client
+		});
 
-    router.didTransition = this._didTransition();
-  }
+		Ember.onerror = this._onError.bind(this);
+	}
 }
 
 export default {
-  name: 'bugsnag-error-service',
+	name: 'bugsnag-error-service',
 
-  initialize,
+	initialize,
 
-  _didTransition() {
-    const router = get(this, 'router');
-    const client = get(this, 'client');
-    const originalDidTransition = router.didTransition || function() {};
+	didTransition() {
+		const client = get(this, 'client');
 
-    return function() {
-      client.refresh();
-      return originalDidTransition.apply(this, arguments);
-    };
-  },
+		client.refresh();
+	},
 
-  _onError(error) {
-    if (!error || typeof error !== 'object' || !error.name || !error.message) {
-      error = this._formatUnknownError(error);
-    }
+	_onError(error) {
+		if (!error) {
+			return;
+		}
 
-    this._setContext();
-    this._setUser();
-    this._notify(error);
+		if (!error || typeof error !== 'object' || !error.name || !error.message) {
+			error = this._formatUnknownError(error);
+		}
 
-    /* eslint-disable no-console */
-    console.error(error.stack || error.message);
-    /* eslint-enable no-console */
+		this._setContext();
+		this._setUser();
+		this._notify(error);
 
-    if (Ember.testing) {
-      throw error;
-    }
-  },
+		// eslint-disable-next-line no-console
+		console.error(error.stack);
 
-  _formatUnknownError(error) {
-    return {
-      name: (error && error.name) || 'UnknownError',
-      message: (error && error.message) || String(error)
-    }
-  },
+		if (Ember.testing) {
+			throw error;
+		}
+	},
 
-  _setUser() {
-    const owner = get(this, 'owner');
-    const client = get(this, 'client');
-    const user = appMethods.getUser && appMethods.getUser(owner);
+	_formatUnknownError(message) {
+		return new UnknownError(message);
+	},
 
-    client.user = user;
-  },
+	_setUser() {
+		const owner = get(this, 'owner');
+		const client = get(this, 'client');
+		const user = appMethods.getUser && appMethods.getUser(owner);
 
-  _setContext() {
-    const router = get(this, 'router');
-    const client = get(this, 'client');
-    const context = getContext(router);
+		client.user = user;
+	},
 
-    client.context = context;
-  },
+	_setContext() {
+		const router = get(this, 'router');
+		const client = get(this, 'client');
+		const context = getContext(router);
 
-  _notify(error) {
-    const owner = get(this, 'owner');
-    const client = get(this, 'client');
-    const metaData = appMethods.getMetaData ? appMethods.getMetaData(error, owner) : {};
+		client.context = context;
+	},
 
-    client.notify(error, { metaData });
-  }
+	async _notify(error) {
+		const owner = get(this, 'owner');
+		const client = get(this, 'client');
+		const metaData = appMethods.getMetaData ? await appMethods.getMetaData(error, owner) : {};
+
+		client.notify(error, { metaData });
+	}
 };

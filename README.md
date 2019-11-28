@@ -2,8 +2,6 @@
 
 [![Build Status](https://circleci.com/gh/binhums/ember-cli-bugsnag.svg?style=shield&circle-token=:circle-token)](https://circleci.com/gh/binhums/ember-cli-bugsnag)
 
-## Installation
-
 Install the addon:
 
 ```sh
@@ -73,7 +71,7 @@ To send custom meta data, define a helper method `getMetaData` in the
 container as arguments, e.g.:
 
 ```js
-export function getMetaData(error, container) {
+export async function getMetaData(error, container) {
   return {
     // …some meta data
   };

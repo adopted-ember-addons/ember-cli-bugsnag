@@ -1,17 +1,17 @@
-export function getMetaData() {
-  return {
-    account: {
-      name: 'Bugsnag',
-      plan: 'premium',
-      beta_access: true
-    },
-  };
+export async function getMetaData() {
+	return {
+		account: {
+			name: 'Bugsnag',
+			plan: 'premium',
+			beta_access: true
+		}
+	};
 }
 
 export function getUser() {
-  return {
-    id: 123,
-    name: 'Dummy User',
-    email: 'dummy@example.com'
-  };
+	return {
+		id: 123,
+		name: 'Dummy User',
+		email: 'dummy@example.com'
+	};
 }

@@ -1,12 +1,11 @@
-import Ember from 'ember';
-import resolver from './helpers/resolver';
-import {
-  setResolver
-} from 'ember-qunit';
-import { start } from 'ember-cli-qunit';
+import Application from '../app';
+import config from '../config/environment';
+import { setApplication } from '@ember/test-helpers';
+import { start } from 'ember-qunit';
+import setupSinon from 'ember-sinon-qunit';
 
-setResolver(resolver);
+setApplication(Application.create(config.APP));
+
+setupSinon();
+
 start();
-
-import QUnitAdapter from './qunit-adapter';
-Ember.Test.adapter = QUnitAdapter.create();

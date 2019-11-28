@@ -1,32 +1,42 @@
-import Ember from 'ember';
-import { initialize } from 'dummy/instance-initializers/bugsnag';
+import Application from '@ember/application';
+import instanceInitializer from 'dummy/instance-initializers/bugsnag';
 import { module, test } from 'qunit';
-import destroyApp from '../../helpers/destroy-app';
+import { run } from '@ember/runloop';
+import Ember from 'ember';
 
-const {
-  set,
-} = Ember;
+module('Unit | Instance Initializer | bugsnag', (hooks) => {
+	hooks.beforeEach(function() {
+		this.TestApplication = Application.extend();
+		this.TestApplication.instanceInitializer(instanceInitializer);
+		this.application = this.TestApplication.create({ autoboot: false });
+		this.instance = this.application.buildInstance();
+		this.client = {
+			config: {
+				notifyReleaseStages: ['production']
+			}
+		};
 
-module('Unit | Instance Initializer | bugsnag', {
-  beforeEach: function() {
-    Ember.run(() => {
-      this.application = Ember.Application.create();
-      this.appInstance = this.application.buildInstance();
-    });
-  },
-  afterEach: function() {
-    Ember.run(this.appInstance, 'destroy');
-    destroyApp(this.application);
-  },
-});
+		this.instance.register('bugsnag:main', this.client, { instantiate: false });
+	});
 
-// Replace this with your real tests.
-test('it works', function(assert) {
-  set(this, 'Bugsnag', {
-    apiKey: '123'
-  });
-  initialize(this.appInstance);
+	hooks.afterEach(function() {
+		run(this.instance, 'destroy');
+		run(this.application, 'destroy');
+	});
 
-  // you would normally confirm the results of the initializer here
-  assert.ok(true);
+	test('it does nothing when release stage is not in the list', async function(assert) {
+		this.client.config.releaseStage = 'foo';
+
+		await this.instance.boot();
+
+		assert.notOk(Ember.onerror);
+	});
+
+	test('it listens to onerror', async function(assert) {
+		this.client.config.releaseStage = 'production';
+
+		await this.instance.boot();
+
+		assert.ok(Ember.onerror);
+	});
 });
