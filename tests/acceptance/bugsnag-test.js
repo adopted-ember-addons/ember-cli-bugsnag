@@ -105,26 +105,6 @@ module('Acceptance | bugsnag', (hooks) => {
 		assert.ok(this.bugsnag.notify.notCalled);
 	});
 
-	// test('it notifies strings as errors', async function(assert) {
-	// 	await visit('/foo');
-
-	// 	try {
-	// 		Ember.onerror('foo');
-	// 	} catch (e) {
-	// 		// noop
-	// 	}
-
-	// 	await settled();
-
-	// 	assert.ok(this.bugsnag.notify.calledOnce);
-
-	// 	const error = this.bugsnag.notify.args[0][0];
-
-	// 	assert.ok(error instanceof Error);
-	// 	assert.equal(error.name, 'UnknownError');
-	// 	assert.equal(error.message, 'foo');
-	// });
-
 	test('it uses empty metadata', async function(assert) {
 		const error = new Error('foo');
 
