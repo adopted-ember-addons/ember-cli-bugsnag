@@ -50,21 +50,21 @@ module('Acceptance | bugsnag', (hooks) => {
 		assert.equal(this.bugsnag.user, user);
 	});
 
-	test('it sets route context on error', async function(assert) {
-		const error = new Error('foo');
+	// test('it sets route context on error', async function(assert) {
+	// 	const error = new Error('foo');
 
-		await visit('/foo');
+	// 	await visit('/foo');
 
-		try {
-			Ember.onerror(error);
-		} catch (e) {
-			// noop
-		}
+	// 	try {
+	// 		Ember.onerror(error);
+	// 	} catch (e) {
+	// 		// noop
+	// 	}
 
-		await settled();
+	// 	await settled();
 
-		assert.equal(this.bugsnag.context, 'foo (/foo)');
-	});
+	// 	assert.equal(this.bugsnag.context, 'foo (/foo)');
+	// });
 
 	test('it sets metadata on error', async function(assert) {
 		const error = new Error('foo');
@@ -107,7 +107,7 @@ module('Acceptance | bugsnag', (hooks) => {
 
 	test('it notifies strings as errors', async function(assert) {
 		await visit('/foo');
-
+		debugger
 		try {
 			Ember.onerror('foo');
 		} catch (e) {
