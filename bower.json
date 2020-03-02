@@ -1,9 +1,0 @@
-{
-  "name": "ember-cli-bugsnag",
-  "dependencies": {
-    "ember-qunit-notifications": "0.1.0"
-  },
-  "resolutions": {
-    "ember": "release"
-  }
-}
