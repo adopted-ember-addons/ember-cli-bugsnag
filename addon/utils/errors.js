@@ -6,6 +6,7 @@ export function getContext(router) {
   if(Ember.VERSION >= '2.15') {
     routeName = router.currentRouteName;
   } else {
+    var infos = router.currentState.routerJsState.handlerInfos;
     routeName = infos[infos.length - 1].name;
   }
 
