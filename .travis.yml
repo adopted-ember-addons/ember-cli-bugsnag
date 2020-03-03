@@ -5,7 +5,7 @@ node_js:
 
 sudo: false
 
-addon:
+addons:
   chrome: stable
 
 cache:
