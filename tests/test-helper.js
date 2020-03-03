@@ -6,7 +6,7 @@ import {
 import { start } from 'ember-cli-qunit';
 
 setResolver(resolver);
-start();
+start({ setupEmberOnerrorValidation: false });
 
 import QUnitAdapter from './qunit-adapter';
 Ember.Test.adapter = QUnitAdapter.create();
