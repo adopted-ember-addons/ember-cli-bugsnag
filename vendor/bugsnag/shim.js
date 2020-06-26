@@ -1,11 +1,11 @@
-/* globals Bugsnag */
+/* globals bugsnag */
 
 define('bugsnag', [], function() {
   'use strict';
 
   if (typeof FastBoot === 'undefined') {
     return {
-      default: Bugsnag
+      default: window.bugsnag
     };
   }
 

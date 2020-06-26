@@ -2,7 +2,6 @@ import { test, module } from 'qunit';
 import startApp from '../helpers/start-app';
 import destroyApp from '../helpers/destroy-app';
 import config from 'dummy/config/environment';
-import Bugsnag from 'bugsnag';
 
 module('Acceptance | custom user', {
   beforeEach() {
@@ -20,19 +19,20 @@ module('Acceptance | custom user', {
 });
 
 test('with custom user set', function(assert) {
+  const expected = {
+    id: 123,
+    name: 'Dummy User',
+    email: 'dummy@example.com'
+  };
+
+  window.bugsnagClient.notify = function(error, options) {
+    assert.deepEqual(
+      options.user,
+      expected,
+      'user should equal what\'s returned from bugsnag util getUser()'
+    );
+  }
+
   visit('/');
   click('button');
-
-  andThen(function() {
-    const expected = {
-      id: 123,
-      name: 'Dummy User',
-      email: 'dummy@example.com'
-    };
-    assert.deepEqual(
-      Bugsnag.user,
-      expected,
-      'Bugsnag.user should equal what\'s returned from bugsnag util getUser()'
-    );
-  });
 });
