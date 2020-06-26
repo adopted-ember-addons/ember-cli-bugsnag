@@ -1,3 +1,11 @@
+## v2.1.1 (2020-06-26)
+
+#### :rocket: Enhancement
+* [#83](https://github.com/adopted-ember-addons/ember-cli-bugsnag/pull/83) Upgrade to Bugsnag 4 ([@Pezmc](https://github.com/Pezmc))
+
+#### Committers: 1
+- Pez Cuckow ([@Pezmc](https://github.com/Pezmc))
+
 
 
 Must provide GITHUB_AUTH
