@@ -24,7 +24,7 @@ module('Acceptance | custom meta-data and user', {
 test('with custom metadata and user set', function(assert) {
   assert.expect(5);
 
-  const expectedMetaData = {
+  const expectedMetadata = {
     account: {
       name: 'Bugsnag',
       plan: 'premium',
@@ -39,8 +39,8 @@ test('with custom metadata and user set', function(assert) {
 
   const Event = {
     addMetadata(section, sectionData) {
-      assert.equal(section, 'account', 'section should equal what\'s returned from bugsnag util getMetaData()');
-      assert.deepEqual(sectionData, expectedMetaData.account, 'sectionData should equal what\'s returned from bugsnag util getMetaData()');
+      assert.equal(section, 'account', 'section should equal what\'s returned from bugsnag util getMetadata()');
+      assert.deepEqual(sectionData, expectedMetadata.account, 'sectionData should equal what\'s returned from bugsnag util getMetadata()');
 
     },
     setUser(id, name, email) {

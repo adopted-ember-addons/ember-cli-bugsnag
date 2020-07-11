@@ -58,14 +58,14 @@ export default {
 
   _setNotifyException(error) {
     const owner = get(this, 'owner');
-    const metaData = appMethods.getMetaData ? appMethods.getMetaData(error, owner) : {};
+    const metadata = appMethods.getMetadata ? appMethods.getMetadata(error, owner) : {};
     const user = this._getUser();
     const context = this._getContext();
 
     Bugsnag.notify(error, event => {
-      const sections = Object.keys(metaData)
+      const sections = Object.keys(metadata)
       for (const section of sections) {
-        event.addMetadata(section, metaData[section]);
+        event.addMetadata(section, metadata[section]);
       }
       event.setUser(user.id, user.name, user.email);
       event.context = context;

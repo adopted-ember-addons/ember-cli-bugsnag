@@ -1,4 +1,4 @@
-export function getMetaData() {
+export function getMetadata() {
   return {
     account: {
       name: 'Bugsnag',
