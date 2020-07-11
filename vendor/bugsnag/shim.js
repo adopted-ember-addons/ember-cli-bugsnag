@@ -5,7 +5,7 @@ define('bugsnag', [], function() {
 
   if (typeof FastBoot === 'undefined') {
     return {
-      default: window.bugsnag
+      default: window.Bugsnag
     };
   }
 

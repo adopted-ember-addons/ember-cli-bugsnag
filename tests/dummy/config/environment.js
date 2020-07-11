@@ -24,7 +24,7 @@ module.exports = function(environment) {
 
     bugsnag: {
       apiKey: "09e2825dc7b16fdbf7b207cf5b780064",
-      notifyReleaseStages: ['production', 'development']
+      enabledReleaseStages: ['production', 'development']
     }
   };
 

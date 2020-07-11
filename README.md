@@ -19,7 +19,7 @@ There are two ways to configure `ember-cli-bugsnag`:
 {
   bugsnag: {
     apiKey: '',
-    notifyReleaseStages: ['development', 'production']
+    enabledReleaseStages: ['development', 'production']
   }
 }
 ```
@@ -33,7 +33,7 @@ can pass and additional attribute to the bugsnag configuration called
 {
   bugsnag: {
     apiKey: '',
-    notifyReleaseStages: ['development', 'production', 'staging'],
+    enabledReleaseStages: ['development', 'production', 'staging'],
     releaseStage: 'staging'
   }
 }
@@ -43,15 +43,15 @@ can pass and additional attribute to the bugsnag configuration called
 
 ```sh
 export BUGSNAG_API_KEY=''
-export BUGSNAG_NOTIFY_RELEASE='development,production'
+export BUGSNAG_ENABLED_RELEASE='development,production'
 ```
 
 Configuration options:
 
  * `config.bugsnag.apiKey` / `BUGSNAG_API_KEY` -- **required**
- * `config.bugsnag.notifyReleaseStages` / `BUGSNAG_NOTIFY_RELEASE` -- optional, defaults to `[]` (never notify).
+ * `config.bugsnag.enabledReleaseStages` / `BUGSNAG_ENABLED_RELEASE` -- optional, defaults to `[]` (never notify).
  * `config.bugsnag.releaseStage` / `BUGSNAG_RELEASE_STAGE` -- optional, defaults to `config.environment`.
- * `config.bugsnag.endpoint` / `BUGSNAG_ENDPOINT` -- optional, defaults to what the libraryUrl uses.
+ * `config.bugsnag.endpoints` / `BUGSNAG_ENDPOINTS` -- optional, defaults to what the libraryUrl uses.
  * `config.currentRevision` -- any string representing the current version of the app, e.g. `"1b8ef2c7"` or `"v1.2.4"`, optional.
    * Defaults to the version specified in package.json, e.g. `0.1.0`.
    * This can be set automatically at build time with [ember-git-version](https://github.com/rwjblue/ember-git-version).
