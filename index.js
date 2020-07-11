@@ -9,7 +9,7 @@ module.exports = {
 
   options: {
     nodeAssets: {
-      'bugsnag-js': {
+      '@bugsnag/browser': {
         vendor: {
           srcDir: 'dist',
           destDir: 'bugsnag-js',
