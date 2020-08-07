@@ -1,44 +1,56 @@
 import BugsnagConfiguration from 'dummy/utils/bugsnag-configuration';
 import { module, test } from 'qunit';
+import Bugsnag from 'bugsnag';
 
-module('Unit | Utility | bugsnag configuration');
+module('Unit | Utility | bugsnag configuration', {
+  beforeEach() {
+    this.originalStart = Bugsnag.start; // NOTE: cached so we can restore it
+  },
 
-test('passes initialized values to bugsnag instance', function(assert) {
-  let configuration = new BugsnagConfiguration({
-    apiKey: 'UALSCA319',
-    notifyReleaseStages: ['test']
-  }, 'insomnia');
-
-  let bugsnagConfig = {};
-  const bugsnagObject = function(_config) {
-    bugsnagConfig = _config
-  };
-  configuration.setup(bugsnagObject);
-  assert.equal(bugsnagConfig['apiKey'], 'UALSCA319');
-  assert.equal(bugsnagConfig['releaseStage'], 'insomnia');
-  assert.deepEqual(bugsnagConfig['notifyReleaseStages'], ['test']);
+  afterEach() {
+    Bugsnag.start = this.start; // NOTE: restore original value
+  }
 });
 
-test('sets default a default for notifyReleaseStages', function(assert) {
+test('passes initialized values to bugsnag instance', function(assert) {
+  assert.expect(3);
+
+  let configuration = new BugsnagConfiguration({
+    apiKey: 'UALSCA319',
+    enabledReleaseStages: ['test']
+  }, 'insomnia');
+
+  Bugsnag.start = function(options) {
+    assert.equal(options['apiKey'], 'UALSCA319');
+    assert.equal(options['releaseStage'], 'insomnia');
+    assert.deepEqual(options['enabledReleaseStages'], ['test']);
+  };
+
+  configuration.setup();
+});
+
+test('sets default a default for enabledReleaseStages', function(assert) {
+  assert.expect(1);
+
   let configuration = new BugsnagConfiguration({
     apiKey: 'UALSCA319'
   }, 'insomnia');
 
-  let bugsnagConfig = {};
-  const bugsnagObject = function(_config) {
-    bugsnagConfig = _config;
+  Bugsnag.start = function(options) {
+    assert.deepEqual(options['enabledReleaseStages'], ['production']);
   };
-  configuration.setup(bugsnagObject);
-  assert.deepEqual(bugsnagConfig['notifyReleaseStages'], ['production']);
+
+  configuration.setup();
 });
 
 test('does not set any values if there is a configuration problem', function(assert) {
+  assert.expect(0);
+
   let configuration = new BugsnagConfiguration({});
 
-  let bugsnagConfig = {};
-  const bugsnagObject = function(_config) {
-    bugsnagConfig = _config;
+  Bugsnag.start = function() {
+    assert.ok(false, 'this should not be called');
   };
-  configuration.setup(bugsnagObject);
-  assert.deepEqual(bugsnagConfig, {});
+
+  configuration.setup();
 });

@@ -1,3 +1,4 @@
+import Bugsnag from 'bugsnag';
 export default class BugsnagConfiguration {
   constructor(config, releaseStage) {
     this.config = config || {};
@@ -8,9 +9,9 @@ export default class BugsnagConfiguration {
     this.valid = this._validate();
   }
 
-  setup(BugsnagClient) {
+  setup() {
     if (this.valid) {
-      window.bugsnagClient = BugsnagClient(this.config);
+      Bugsnag.start(this.config);
     } else {
       /* eslint-disable no-console */
       console.error('[ember-cli-bugsnag] Could not start Bugsnag reporting because of configuration issues');
@@ -29,11 +30,11 @@ export default class BugsnagConfiguration {
   }
 
   _setDefaultValues() {
-    if (!this.config.notifyReleaseStages) {
+    if (!this.config.enabledReleaseStages) {
       /* eslint-disable no-console */
-      console.info('[ember-cli-bugsnag] Notify release stages not defined in configuration, defaulting to `["production"]`. Either define `bugsnag.notifyReleaseStages` in your config file or a comma separated environment variable BUGSNAG_NOTIFY_RELEASE');
+      console.info('[ember-cli-bugsnag] Enabled release stages not defined in configuration, defaulting to `["production"]`. Either define `bugsnag.enabledReleaseStages` in your config file or a comma separated environment variable BUGSNAG_ENABLED_RELEASE');
       /* eslint-enable no-console */
-      this.config.notifyReleaseStages = ["production"];
+      this.config.enabledReleaseStages = ["production"];
     }
   }
 }

@@ -1,3 +1,4 @@
+import Bugsnag from 'bugsnag';
 import Ember  from 'ember';
 import config from '../config/environment';
 import { getContext } from 'ember-cli-bugsnag/utils/errors';
@@ -9,13 +10,13 @@ const {
 } = Ember;
 
 export function initialize(instance) {
-  if (window.bugsnagClient.config.apiKey === undefined) {
+  if (Bugsnag._client._config.apiKey === undefined) {
     return;
   }
   const currentEnv = config.environment;
   const bugsnagConfig = config.bugsnag || {};
   const releaseStage = bugsnagConfig.releaseStage || currentEnv;
-  const releaseStages = window.bugsnagClient.config.notifyReleaseStages;
+  const releaseStages = Bugsnag._client._config.enabledReleaseStages;
 
   if (currentEnv !== 'test' && releaseStages.indexOf(releaseStage) !== -1) {
     const owner = instance.lookup ? instance : instance.container;
@@ -42,7 +43,7 @@ export default {
     const originalDidTransition = router.didTransition || function() {};
 
     return function() {
-      window.bugsnagClient.refresh();
+      Bugsnag.resetEventCount();
       return originalDidTransition.apply(this, arguments);
     };
   },
@@ -57,13 +58,17 @@ export default {
 
   _setNotifyException(error) {
     const owner = get(this, 'owner');
-    const metaData = appMethods.getMetaData ? appMethods.getMetaData(error, owner) : {};
+    const metadata = appMethods.getMetadata ? appMethods.getMetadata(error, owner) : {};
     const user = this._getUser();
     const context = this._getContext();
-    window.bugsnagClient.notify(error, {
-      metaData,
-      user,
-      context,
+
+    Bugsnag.notify(error, event => {
+      const sections = Object.keys(metadata)
+      for (const section of sections) {
+        event.addMetadata(section, metadata[section]);
+      }
+      event.setUser(user.id, user.name, user.email);
+      event.context = context;
     });
   },
 

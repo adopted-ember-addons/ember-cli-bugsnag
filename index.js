@@ -9,7 +9,7 @@ module.exports = {
 
   options: {
     nodeAssets: {
-      'bugsnag-js': {
+      '@bugsnag/browser': {
         vendor: {
           srcDir: 'dist',
           destDir: 'bugsnag-js',
@@ -53,7 +53,7 @@ module.exports = {
       app.import('vendor/bugsnag/shim.js', {
         type: 'vendor',
         exports: {
-          bugsnag: ['default']
+          Bugsnag: ['default']
         }
       });
     }

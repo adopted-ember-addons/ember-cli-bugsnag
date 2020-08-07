@@ -21,7 +21,7 @@
     "test": "node node-tests/**/*-test.js && ember try:testall"
   },
   "dependencies": {
-    "bugsnag-js": "^4.7.3",
+    "@bugsnag/js": "^7.2.0",
     "ember-cli-babel": "^6.4.1",
     "ember-cli-node-assets": "^0.2.2",
     "fastboot-transform": "^0.1.1"
