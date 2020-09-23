@@ -10,7 +10,7 @@ const {
 } = Ember;
 
 export function initialize(instance) {
-  if (Bugsnag._client._config.apiKey === undefined) {
+  if (!Bugsnag._client || Bugsnag._client._config.apiKey === undefined) {
     return;
   }
   const currentEnv = config.environment;
