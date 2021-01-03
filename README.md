@@ -132,15 +132,15 @@ export function getUser(owner) {
 
 Uploading sourcemaps to Bugsnag makes it easier to track down errors in your
 code because the stacktrace for each error in the Bugsnag UI highlights the
-exact line in your unminified source code. To send sourcemaps  Bugsnag, use the
+exact line in your unminified source code. To send sourcemaps to Bugsnag, you can use the
 Ember CLI Deploy addon [`ember-cli-deploy-bugsnag`](https://github.com/IcarusWorks/ember-cli-deploy-bugsnag).
 
 ### Upgrading to 3.0
 
-ember-cli-bugsnag 3.0 includes some changes to bring the add-on in line with the latest from the bugsnag-js library and accompanying docs.
+ember-cli-bugsnag 3.0 includes some changes to bring this addon in line with the latest from the bugsnag-js library and accompanying documentation.
 
 1. Rename `config.bugsnag.notifyReleaseStages`/`BUGSNAG_NOTIFY_RELEASE` to `config.bugsnag.enabledReleaseStages`/`BUGSNAG_ENABLED_RELEASE`
 
 2. `config.bugsnag.endpoint`/ `BUGSNAG_ENDPOINT` => `config.bugsnag.endpoints`/`BUGSNAG_ENDPOINTS`
 
-3. Rename `getMetaData` =>  `getMetadata` in `app/utills/bugsnag.js`
+3. Rename `getMetaData` =>  `getMetadata` in `app/utils/bugsnag.js`
