@@ -1,5 +1,7 @@
 Must provide GITHUB_AUTH
 
+## v3.0.1 (2021-01-14)
+
 ## v2.1.1 (2020-06-26)
 
 #### :rocket: Enhancement
