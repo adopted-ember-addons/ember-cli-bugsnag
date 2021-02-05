@@ -18,7 +18,8 @@
   "scripts": {
     "build": "ember build",
     "start": "ember server",
-    "test": "node node-tests/**/*-test.js && ember try:testall"
+    "test": "node node-tests/**/*-test.js && ember try:testall",
+    "lint": "echo 'Soon'"
   },
   "dependencies": {
     "@bugsnag/js": "^7.2.0",
