@@ -8,6 +8,9 @@
 /node_modules
 /bower_components
 
+# tests
+/.node_modules.ember-try
+
 # misc
 /.sass-cache
 /connect.lock
@@ -15,3 +18,4 @@
 /libpeerconnection.log
 npm-debug.log*
 testem.log
+
