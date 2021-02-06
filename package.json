@@ -18,7 +18,7 @@
   "scripts": {
     "build": "ember build",
     "start": "ember server",
-    "test": "node node-tests/**/*-test.js && ember try:testall",
+    "test": "node node-tests/**/*-test.js && ember try:each",
     "lint": "echo 'Soon'"
   },
   "dependencies": {
@@ -51,7 +51,8 @@
     "ember-try": "^1.4.0",
     "loader.js": "^4.5.1",
     "release-it": "^14.2.0",
-    "release-it-lerna-changelog": "^3.1.0"
+    "release-it-lerna-changelog": "^3.1.0",
+    "bower": "^1.8.2"
   },
   "engines": {
     "node": "10.* || >= 12"
