@@ -5,7 +5,7 @@ var readEnvironmentConfig = require('./lib/environment-config').read;
 var fastbootTransform = require('fastboot-transform');
 
 module.exports = {
-  name: 'ember-cli-bugsnag',
+  name: require('./package').name,
 
   options: {
     nodeAssets: {
