@@ -1,15 +1,11 @@
 import Bugsnag from 'bugsnag';
-import Ember  from 'ember';
+import Ember from 'ember';
 import config from '../config/environment';
 import { getContext } from 'ember-cli-bugsnag/utils/errors';
 import * as appMethods from '../utils/bugsnag';
+import { setProperties } from '@ember/object';
 
-const {
-  get,
-  setProperties,
-} = Ember;
-
-export function initialize(instance) {
+export function initialize(application) {
   if (!Bugsnag._client || Bugsnag._client._config.apiKey === undefined) {
     return;
   }
@@ -19,17 +15,19 @@ export function initialize(instance) {
   const releaseStages = Bugsnag._client._config.enabledReleaseStages;
 
   if (currentEnv !== 'test' && releaseStages.indexOf(releaseStage) !== -1) {
-    const owner = instance.lookup ? instance : instance.container;
+    const owner = application.lookup ? application : application.container;
+    // eslint-disable-next-line ember/no-private-routing-service
     const router = owner.lookup('router:main');
 
-    setProperties(this, {
-      owner,
-      router
+    setProperties(this, { owner, router });
+
+    Ember.onerror = (error) => {
+      this._onError(error);
+    };
+
+    router.on('routeDidChange', () => {
+      Bugsnag.resetEventCount();
     });
-
-    Ember.onerror = (error) => this._onError(error);
-
-    router.didTransition = this._didTransition();
   }
 }
 
@@ -38,32 +36,20 @@ export default {
 
   initialize,
 
-  _didTransition() {
-    const router = get(this, 'router');
-    const originalDidTransition = router.didTransition || function() {};
-
-    return function() {
-      Bugsnag.resetEventCount();
-      return originalDidTransition.apply(this, arguments);
-    };
-  },
-
   _onError(error) {
     this._setNotifyException(error);
 
-    /* eslint-disable no-console */
+    /* eslint-disable-next-line no-console */
     console.error(error.stack);
-    /* eslint-enable no-console */
   },
 
   _setNotifyException(error) {
-    const owner = get(this, 'owner');
-    const metadata = appMethods.getMetadata ? appMethods.getMetadata(error, owner) : {};
+    const metadata = this._getMetadata(error);
     const user = this._getUser();
     const context = this._getContext();
 
-    Bugsnag.notify(error, event => {
-      const sections = Object.keys(metadata)
+    Bugsnag.notify(error, (event) => {
+      const sections = Object.keys(metadata);
       for (const section of sections) {
         event.addMetadata(section, metadata[section]);
       }
@@ -72,16 +58,21 @@ export default {
     });
   },
 
+  _getMetadata(error) {
+    const owner = this.owner;
+    return appMethods.getMetadata ? appMethods.getMetadata(error, owner) : {};
+  },
+
   _getContext() {
-    const router = get(this, 'router');
+    const router = this.router;
     return getContext(router);
   },
 
   _getUser() {
-    const owner = get(this, 'owner');
+    const owner = this.owner;
     if (appMethods.getUser) {
       const user = appMethods.getUser(owner);
       return user;
     }
-  }
+  },
 };

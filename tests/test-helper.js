@@ -1,12 +1,12 @@
-import Ember from 'ember';
-import resolver from './helpers/resolver';
-import {
-  setResolver
-} from '@ember/test-helpers';
-import { start } from 'ember-cli-qunit';
+import Application from 'dummy/app';
+import config from 'dummy/config/environment';
+import * as QUnit from 'qunit';
+import { setApplication } from '@ember/test-helpers';
+import { setup } from 'qunit-dom';
+import { start } from 'ember-qunit';
 
-setResolver(resolver);
-start({ setupEmberOnerrorValidation: false });
+setApplication(Application.create(config.APP));
 
-import QUnitAdapter from './qunit-adapter';
-Ember.Test.adapter = QUnitAdapter.create();
+setup(QUnit.assert);
+
+start();

@@ -1,11 +1,10 @@
-/* jshint node: true */
 'use strict';
 
 var readEnvironmentConfig = require('./lib/environment-config').read;
 var fastbootTransform = require('fastboot-transform');
 
 module.exports = {
-  name: 'ember-cli-bugsnag',
+  name: require('./package').name,
 
   options: {
     nodeAssets: {
@@ -17,31 +16,31 @@ module.exports = {
 
           processTree(input) {
             return fastbootTransform(input);
-          }
-        }
-      }
-    }
+          },
+        },
+      },
+    },
   },
 
-  config: function() {
+  config: function () {
     return {
-      bugsnag: readEnvironmentConfig(process.env)
+      bugsnag: readEnvironmentConfig(process.env),
     };
   },
 
-  treeForAddon: function() {
+  treeForAddon: function () {
     if (this._includeBugsnag) {
       return this._super.treeForAddon.apply(this, arguments);
     }
   },
 
-  treeForApp: function() {
+  treeForApp: function () {
     if (this._includeBugsnag) {
       return this._super.treeForApp.apply(this, arguments);
     }
   },
 
-  included: function(app) {
+  included: function (app) {
     this._includeBugsnag =
       this.isDevelopingAddon() || process.env.EMBER_ENV !== 'test';
 
@@ -53,9 +52,9 @@ module.exports = {
       app.import('vendor/bugsnag/shim.js', {
         type: 'vendor',
         exports: {
-          Bugsnag: ['default']
-        }
+          Bugsnag: ['default'],
+        },
       });
     }
-  }
+  },
 };

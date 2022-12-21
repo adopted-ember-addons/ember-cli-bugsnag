@@ -1,18 +1,27 @@
-# Ember-cli-bugsnag
+ember-cli-bugsnag
+==============================================================================
 
 [![Build Status](https://travis-ci.com/adopted-ember-addons/ember-cli-bugsnag.svg)](https://travis-ci.com/adopted-ember-addons/ember-cli-bugsnag) [![Ember Observer Score](https://emberobserver.com/badges/ember-cli-bugsnag.svg)](https://emberobserver.com/addons/ember-cli-bugsnag)
 
-## Installation
 
-Install the addon:
+Compatibility
+------------------------------------------------------------------------------
 
-```sh
+* Ember.js v3.24 or above
+* Ember CLI v3.24 or above
+* Node.js v12 or above
+
+
+Installation
+------------------------------------------------------------------------------
+
+```
 ember install ember-cli-bugsnag
 ```
 
-💥 `ember-cli-bugsnag` 3.0.0 includes some breaking changes. [Learn more](#upgrading-to-30).
 
-## Configuration
+Usage
+------------------------------------------------------------------------------
 
 There are two ways to configure `ember-cli-bugsnag`:
 
@@ -59,7 +68,7 @@ Configuration options:
    * Defaults to the version specified in package.json, e.g. `0.1.0`.
    * This can be set automatically at build time with [ember-git-version](https://github.com/rwjblue/ember-git-version).
 
-## Customization
+### Customization
 
 In order to send additional data along with errors reported to Bugsnag, generate
 a utility named `bugsnag`:
@@ -144,3 +153,14 @@ ember-cli-bugsnag 3.0 includes some changes to bring this addon in line with the
 2. `config.bugsnag.endpoint`/ `BUGSNAG_ENDPOINT` => `config.bugsnag.endpoints`/`BUGSNAG_ENDPOINTS`
 
 3. Rename `getMetaData` =>  `getMetadata` in `app/utils/bugsnag.js`
+
+Contributing
+------------------------------------------------------------------------------
+
+See the [Contributing](CONTRIBUTING.md) guide for details.
+
+
+License
+------------------------------------------------------------------------------
+
+This project is licensed under the [MIT License](LICENSE.md).

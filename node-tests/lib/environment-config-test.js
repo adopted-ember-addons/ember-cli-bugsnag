@@ -3,9 +3,9 @@ var readEnvironmentConfig = require('../../lib/environment-config').read;
 
 var result = readEnvironmentConfig({
   BUGSNAG_API_KEY: 'scarlet',
-  BUGSNAG_ENABLED_RELEASE: "holmes,watson",
-  BUGSNAG_RELEASE_STAGE: "baskerville",
-  BUGSNAG_ENDPOINTS: "hounds,dartmoor"
+  BUGSNAG_ENABLED_RELEASE: 'holmes,watson',
+  BUGSNAG_RELEASE_STAGE: 'baskerville',
+  BUGSNAG_ENDPOINTS: 'hounds,dartmoor',
 });
 
 assert.deepEqual(result, {
@@ -14,6 +14,6 @@ assert.deepEqual(result, {
   releaseStage: 'baskerville',
   endpoints: {
     notify: 'hounds',
-    sessions: 'dartmoor'
-  }
+    sessions: 'dartmoor',
+  },
 });
