@@ -1,59 +1,77 @@
 import { test, module } from 'qunit';
-import startApp from '../helpers/start-app';
-import destroyApp from '../helpers/destroy-app';
 import config from 'dummy/config/environment';
 import Bugsnag from 'bugsnag';
+import { click, visit } from '@ember/test-helpers';
+import { setupApplicationTest } from 'ember-qunit';
 
-module('Acceptance | custom meta-data and user', {
-  beforeEach() {
+module('Acceptance | custom meta-data and user', function (hooks) {
+  hooks.beforeEach(() => {
     config.bugsnag.releaseStage = 'production';
     this.cachedEnvValue = config.environment; // NOTE: cached so we can restore it
-    this.originalNotify = Bugsnag.notify; // NOTE: cached so we can restore it
     config.environment = 'addon-test';
-    this.application = startApp();
-  },
+  });
 
-  afterEach() {
+  hooks.afterEach(() => {
     delete config.bugsnag.releaseStage;
     config.environment = this.cachedEnvValue; // NOTE: restore original value
-    Bugsnag.notify = this.originalNotify; // NOTE: restore original value
-    destroyApp(this.application);
-  }
-});
+    delete Bugsnag._client; // NOTE: reset client
+  });
 
-test('with custom metadata and user set', function(assert) {
-  assert.expect(5);
+  setupApplicationTest(hooks);
 
-  const expectedMetadata = {
-    account: {
-      name: 'Bugsnag',
-      plan: 'premium',
-      beta_access: true
-    },
-  };
-  const expectedUser = {
-    id: 123,
-    name: 'Dummy User',
-    email: 'dummy@example.com'
-  };
+  test('with custom metadata and user set', async function (assert) {
+    assert.expect(5);
 
-  const Event = {
-    addMetadata(section, sectionData) {
-      assert.equal(section, 'account', 'section should equal what\'s returned from bugsnag util getMetadata()');
-      assert.deepEqual(sectionData, expectedMetadata.account, 'sectionData should equal what\'s returned from bugsnag util getMetadata()');
+    const expectedMetadata = {
+      account: {
+        name: 'Bugsnag',
+        plan: 'premium',
+        beta_access: true,
+      },
+    };
+    const expectedUser = {
+      id: 123,
+      name: 'Dummy User',
+      email: 'dummy@example.com',
+    };
 
-    },
-    setUser(id, name, email) {
-      assert.equal(id, expectedUser.id, 'id should equal what\'s returned from bugsnag util getUser().id');
-      assert.equal(name, expectedUser.name, 'id should equal what\'s returned from bugsnag util getUser().name');
-      assert.equal(email, expectedUser.email, 'id should equal what\'s returned from bugsnag util getUser().email');
-    }
-  }
+    const Event = {
+      addMetadata(section, sectionData) {
+        assert.equal(
+          section,
+          'account',
+          "section should equal what's returned from bugsnag util getMetadata()"
+        );
+        assert.deepEqual(
+          sectionData,
+          expectedMetadata.account,
+          "sectionData should equal what's returned from bugsnag util getMetadata()"
+        );
+      },
+      setUser(id, name, email) {
+        assert.equal(
+          id,
+          expectedUser.id,
+          "id should equal what's returned from bugsnag util getUser().id"
+        );
+        assert.equal(
+          name,
+          expectedUser.name,
+          "id should equal what's returned from bugsnag util getUser().name"
+        );
+        assert.equal(
+          email,
+          expectedUser.email,
+          "id should equal what's returned from bugsnag util getUser().email"
+        );
+      },
+    };
 
-  Bugsnag.notify = function(error, onError) {
-    onError(Event);
-  }
+    Bugsnag.notify = function (error, onError) {
+      onError(Event);
+    };
 
-  visit('/');
-  click('button');
+    await visit('/');
+    await click('button');
+  });
 });

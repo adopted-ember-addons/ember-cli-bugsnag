@@ -1,29 +1,41 @@
-import Ember from 'ember';
+import Application from '@ember/application';
+
+import config from 'dummy/config/environment';
 import { initialize } from 'dummy/instance-initializers/bugsnag';
 import { module, test } from 'qunit';
-import destroyApp from '../../helpers/destroy-app';
+import Resolver from 'ember-resolver';
+import { run } from '@ember/runloop';
+import { set } from '@ember/object';
 
-const {
-  set,
-} = Ember;
+module('Unit | Instance Initializer | bugsnag', function (hooks) {
+  hooks.beforeEach(function () {
+    this.TestApplication = class TestApplication extends Application {
+      modulePrefix = config.modulePrefix;
+      podModulePrefix = config.podModulePrefix;
+      Resolver = Resolver;
+    };
 
-module('Unit | Instance Initializer | bugsnag', {
-  beforeEach: function() {
-    Ember.run(() => {
-      this.application = Ember.Application.create();
-      this.appInstance = this.application.buildInstance();
+    this.TestApplication.instanceInitializer({
+      name: 'bugsnag',
+      initialize,
     });
-  },
-  afterEach: function() {
-    Ember.run(this.appInstance, 'destroy');
-    destroyApp(this.application);
-  },
+
+    this.application = this.TestApplication.create({
+      autoboot: false,
+    });
+
+    this.instance = this.application.buildInstance();
+  });
+  hooks.afterEach(function () {
+    run(this.instance, 'destroy');
+    run(this.application, 'destroy');
+  });
 });
 
 // Replace this with your real tests.
-test('it works', function(assert) {
+test('it works', function (assert) {
   set(this, 'Bugsnag', {
-    apiKey: '123'
+    apiKey: '123',
   });
   initialize(this.appInstance);
 

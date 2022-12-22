@@ -1,7 +1,14 @@
+{{page-title "Dummy"}}
+
 <h2 id="title">Welcome to Ember</h2>
 
-<button {{action 'mystery-action'}}>
+<button type="button" {{on "click" this.actionWithError}}>
   Raise an error
 </button>
+
+{{#if this.showField}}
+  <h1>Hello</h1>
+  {{this.field}}
+{{/if}}
 
 {{outlet}}
